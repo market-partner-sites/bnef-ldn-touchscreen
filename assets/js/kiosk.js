@@ -618,7 +618,7 @@
   function renderZoneCard() {
     var card = $('#zone-card');
     var info = state.zone && zoneIndex[state.zone];
-    if (!info) { card.innerHTML = '<p class="zone-card__hint">Tap a room to see what\'s on there.</p>'; return; }
+    if (!info) { card.innerHTML = '<p class="zone-card__hint"><span class="pulse"></span>Tap a room to see what\'s on there</p>'; return; }
     var z = info.zone, t = now();
     var here = state.slots.filter(function (sl) { return sl.end > t; })
       .reduce(function (acc, sl) { return acc.concat(sl.sessions.filter(function (s) { return s.room && s.room.id === z.id; })); }, [])
