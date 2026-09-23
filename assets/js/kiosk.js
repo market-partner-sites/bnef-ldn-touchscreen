@@ -337,7 +337,7 @@
     var upcoming = slotsAfter(t);
 
     if (t < first.start) {
-      $('#now-heading').textContent = dayKey(t) === first.day ? 'Starting soon' : 'The Summit opens ' + fmtDayLong(first.start);
+      $('#now-heading').textContent = 'Happening now';
       $('#now-meta').textContent = '';
       current = [first];
       upcoming = upcoming.slice(1);
