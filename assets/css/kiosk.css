@@ -199,7 +199,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   position: relative;
 }
 .tile:active { background: var(--surface-2); }
-.tile > svg { width: 56px; height: 56px; color: var(--accent-dark); margin-bottom: auto; }
+.tile > svg { width: 56px; height: 56px; color: var(--accent); margin-bottom: auto; }
 .tile__title { font-size: 30px; font-weight: 700; }
 .tile__sub { font-size: 21px; color: var(--ink-2); line-height: 1.3; }
 .tile--accent { background: var(--accent-tint); border-color: rgba(75, 174, 135, .35); }
