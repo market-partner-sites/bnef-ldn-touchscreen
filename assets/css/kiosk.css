@@ -92,7 +92,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 }
 .brand__name { font-size: 38px; font-weight: 400; letter-spacing: -.01em; }
 .brand__name b { font-weight: 700; }
-.brand__logo { display: block; height: 48px; width: auto; }
+.brand__logo { display: block; height: 31px; width: auto; }
 .clock { text-align: right; display: flex; flex-direction: column; }
 .clock__time { font-size: 52px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
 .clock__date { font-size: 22px; color: #a9b0bd; margin-top: 8px; letter-spacing: .02em; }
