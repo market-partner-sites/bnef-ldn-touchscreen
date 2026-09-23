@@ -368,7 +368,7 @@
           '<span class="now-card__meta">' + (live ? '<span class="live">Live</span>' : '') +
           '<span>' + fmtTime(s.start) + ' – ' + fmtTime(s.end) + '</span>' + (s.track ? '<span>· Track ' + (s.track.order + 1) + '</span>' : '') + '</span>' +
           '<span class="now-card__title">' + esc(s.title) + '</span>' +
-          (s.room ? '<span class="now-card__room">' + esc(s.room.label) + '</span>' : '') +
+          (s.room ? '<span class="now-card__room">Location: ' + esc(s.room.label) + '</span>' : '') +
           '<span class="now-card__chev">' + ICON.chev + '</span>' +
           (live && !compact ? '<span class="progress"><i style="width:' + pct.toFixed(1) + '%"></i></span>' : '') +
           '</button>';
