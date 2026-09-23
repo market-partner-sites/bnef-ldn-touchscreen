@@ -378,7 +378,7 @@
 
     // Up next — flatten breakouts into one row that opens the agenda at that slot.
     var today = dayKey(t);
-    var rows = upcoming.filter(function (sl) { return sl.kind !== 'break' || !/^summit close/i.test(sl.sessions[0].title); }).slice(0, 4);
+    var rows = upcoming.filter(function (sl) { return sl.kind !== 'break' || !/^summit close/i.test(sl.sessions[0].title); }).slice(0, 8);
     $('#next-heading').textContent = rows.length && rows[0].day !== today && t >= first.start ? 'Coming up ' + (DAY_NAMES[d(rows[0].start).getUTCDay()]) : 'Up next';
     nextList.innerHTML = rows.map(function (sl) {
       var timeLabel = fmtTime(sl.start);
@@ -391,6 +391,11 @@
       return '<button type="button" class="next-row" data-session="' + esc(s.id) + '"><span class="next-row__time">' + timeLabel + '</span>' +
         '<span class="next-row__title">' + esc(s.title) + (s.room ? '<span class="next-row__room">' + esc(s.room.label) + '</span>' : '') + '</span>' + ICON.chev + '</button>';
     }).join('') || '<p class="empty-note">That\'s everything on the programme.</p>';
+    // Show as many Up next rows as fit the space above the tiles, never a cut-off row.
+    var block = nextList.parentNode;
+    while (nextList.children.length > 1 && block.scrollHeight > block.clientHeight + 1) {
+      nextList.removeChild(nextList.lastElementChild);
+    }
   }
 
   /* ================= agenda ================= */
@@ -407,9 +412,10 @@
     var ppl = peopleOn(s.id);
     var av = ppl.slice(0, 4).map(avatar).join('') + (ppl.length > 4 ? '<span class="avatars__more">+' + (ppl.length - 4) + '</span>' : '');
     return '<button type="button" class="session' + (s.track ? ' session--t' + (s.track.order % 3 + 1) : '') + '" data-session="' + esc(s.id) + '">' +
-      '<span class="session__top">' + chipFor(s) + '</span>' +
       '<span class="session__title">' + esc(s.title) + '</span>' +
-      ((ppl.length || s.room) ? '<span class="session__foot"><span class="session__room">' + (s.room ? 'Location: ' + esc(s.room.label) : '') + '</span><span class="avatars">' + av + '</span></span>' : '') +
+      '<span class="session__foot"><span class="session__meta">' + chipFor(s) +
+        (s.room ? '<span class="session__room">Location: ' + esc(s.room.label) + '</span>' : '') + '</span>' +
+        (ppl.length ? '<span class="avatars">' + av + '</span>' : '') + '</span>' +
       '</button>';
   }
 
