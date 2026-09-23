@@ -201,7 +201,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .tile__sub { font-size: 21px; color: var(--ink-2); line-height: 1.3; }
 .tile--accent { background: var(--accent-tint); border-color: #c6e6d6; }
 .tile__qr { width: 96px; height: 96px; margin-bottom: auto; background: #fff; padding: 6px; border-radius: 8px; }
-.tile__qr svg, .qr-card__code svg, .attract__qr svg { display: block; width: 100%; height: 100%; }
+.tile__qr svg, .qr-card__code svg { display: block; width: 100%; height: 100%; }
 
 /* ---------- agenda ---------- */
 .agenda-list { padding: 12px var(--pad) 80px; }
@@ -434,8 +434,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .attract__touch { display: flex; align-items: center; gap: 24px; font-size: 32px; font-weight: 600; }
 .pulse { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); position: relative; flex: none; }
 .pulse::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--accent); animation: ring 1.8s ease-out infinite; }
-.attract__qr { display: flex; align-items: center; gap: 18px; font-size: 21px; color: #cfd4dc; line-height: 1.3; }
-.attract__qr > div { width: 150px; height: 150px; background: #fff; padding: 10px; border-radius: 12px; flex: none; }
 
 /* ---------- toast ---------- */
 .toast {
