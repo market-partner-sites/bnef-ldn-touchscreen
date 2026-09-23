@@ -142,6 +142,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .welcome__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,14,26,.15) 0%, rgba(5,14,26,.85) 100%); }
 .welcome__text { position: absolute; left: var(--pad); right: var(--pad); bottom: 44px; color: #fff; }
 .welcome__text h1 { margin: 12px 0 0; font-size: 64px; line-height: 1.05; font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+.welcome__pre { display: block; font-size: 32px; line-height: 1.2; margin-bottom: 4px; letter-spacing: -.01em; }
+.welcome__city { font-weight: 400; color: var(--accent); }
 
 .home-body {
   flex: 1; min-height: 0;
