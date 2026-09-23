@@ -338,7 +338,7 @@
 
     if (t < first.start) {
       $('#now-heading').textContent = dayKey(t) === first.day ? 'Starting soon' : 'The Summit opens ' + fmtDayLong(first.start);
-      $('#now-meta').textContent = 'Doors open ' + fmtTime(first.start);
+      $('#now-meta').textContent = '';
       current = [first];
       upcoming = upcoming.slice(1);
     } else if (t >= last.end) {
