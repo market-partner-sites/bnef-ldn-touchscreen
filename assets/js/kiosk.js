@@ -715,6 +715,7 @@
 
     document.addEventListener('click', function (e) {
       var el;
+      if ((el = e.target.closest('[data-attract]'))) { showAttract(); return; }
       if ((el = e.target.closest('[data-go]'))) { closeSheet(); go(el.dataset.go); return; }
       if ((el = e.target.closest('[data-close]'))) { closeSheet(); return; }
       if ((el = e.target.closest('#sheet-back'))) { sheetBack(); return; }
