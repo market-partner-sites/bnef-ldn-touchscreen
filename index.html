@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>BNEF Summit Kiosk</title>
+<link rel="icon" href="assets/img/favicon.ico">
+<link rel="stylesheet" href="assets/css/kiosk.css">
+</head>
+<body>
+
+<!-- Everything is laid out on a fixed 1080 × 1920 portrait stage, scaled to
+     fit whatever screen it's on (see fitStage() in kiosk.js). -->
+<div class="stage" id="stage">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand__mark">BNEF</span>
+      <span class="brand__name">Summit <b>London</b></span>
+    </div>
+    <div class="clock">
+      <span class="clock__time" id="clock-time">--:--</span>
+      <span class="clock__date" id="clock-date"></span>
+    </div>
+  </header>
+
+  <main class="views">
+
+    <!-- HOME -->
+    <section class="view is-active" id="view-home" data-view="home" aria-label="Home">
+      <div class="welcome">
+        <img class="welcome__img" src="assets/img/hero-skyline.jpg" alt="">
+        <div class="welcome__scrim"></div>
+        <div class="welcome__text">
+          <span class="eyebrow eyebrow--light">19–20 October 2026 · Royal Lancaster London</span>
+          <h1>Welcome to BNEF&nbsp;Summit London</h1>
+        </div>
+      </div>
+
+      <div class="home-body">
+        <div class="now-block">
+          <div class="section-head">
+            <h2 id="now-heading">Happening now</h2>
+            <span class="section-head__meta" id="now-meta"></span>
+          </div>
+          <div id="now-list" class="now-list"></div>
+        </div>
+
+        <div class="next-block">
+          <div class="section-head">
+            <h2 id="next-heading">Up next</h2>
+          </div>
+          <div id="next-list" class="next-list"></div>
+        </div>
+
+        <div class="tiles">
+          <button class="tile" type="button" data-go="agenda">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3v4M8 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+            <span class="tile__title">Full agenda</span>
+            <span class="tile__sub">Both days, every session</span>
+          </button>
+          <button class="tile" type="button" data-go="map">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
+            <span class="tile__title">Venue map</span>
+            <span class="tile__sub">Rooms, catering, cloakroom</span>
+          </button>
+          <button class="tile tile--accent" type="button" data-go="feedback">
+            <div class="tile__qr" data-qr="small"></div>
+            <span class="tile__title">Share feedback</span>
+            <span class="tile__sub">Two minutes on your phone</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section class="view" id="view-agenda" data-view="agenda" aria-label="Agenda">
+      <div class="view-head">
+        <h2 class="view-title">Agenda</h2>
+        <div class="segmented" id="day-toggle" role="tablist"></div>
+      </div>
+      <div class="scroller" id="agenda-scroller">
+        <div id="agenda-list" class="agenda-list"></div>
+      </div>
+    </section>
+
+    <!-- MAP -->
+    <section class="view" id="view-map" data-view="map" aria-label="Venue map">
+      <div class="view-head">
+        <h2 class="view-title">Venue map</h2>
+        <div class="segmented" id="floor-toggle" role="tablist"></div>
+      </div>
+      <div class="map-wrap">
+        <svg class="map" id="map-svg" viewBox="0 0 1000 885" role="img" aria-label="Venue floor plan"></svg>
+      </div>
+      <div class="map-legend">
+        <span><i class="lg lg--here"></i>You are here</span>
+        <span><i class="lg lg--live"></i>Session on now</span>
+        <span>Tap any room for details</span>
+      </div>
+      <div class="zone-card" id="zone-card">
+        <p class="zone-card__hint">Tap a room to see what's on there.</p>
+      </div>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section class="view" id="view-feedback" data-view="feedback" aria-label="Feedback">
+      <div class="feedback">
+        <span class="eyebrow">Your view matters</span>
+        <h2 class="feedback__title">How is the Summit going for you?</h2>
+        <p class="feedback__lede">Scan the code with your phone camera to open a short survey. It takes about two minutes, and every answer shapes next year's programme.</p>
+        <div class="qr-card">
+          <div class="qr-card__code" data-qr="large"></div>
+        </div>
+        <ol class="steps">
+          <li><b>Open your camera</b><span>No app needed on most phones</span></li>
+          <li><b>Point it at the code</b><span>Tap the link that appears</span></li>
+          <li><b>Rate the sessions</b><span>Anonymous, about two minutes</span></li>
+        </ol>
+        <p class="feedback__url" id="feedback-url"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="dock" aria-label="Kiosk sections">
+    <button type="button" class="dock__btn is-active" data-go="home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7M5 10v10h5v-6h4v6h5V10"/></svg>
+      <span>Home</span>
+    </button>
+    <button type="button" class="dock__btn" data-go="agenda">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3v4M8 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+      <span>Agenda</span>
+    </button>
+    <button type="button" class="dock__btn" data-go="map">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
+      <span>Map</span>
+    </button>
+    <button type="button" class="dock__btn" data-go="feedback">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5zM8 9h8M8 12h5"/></svg>
+      <span>Feedback</span>
+    </button>
+  </nav>
+
+  <!-- Session / speaker detail sheet -->
+  <div class="sheet" id="sheet" aria-hidden="true">
+    <div class="sheet__backdrop" data-close></div>
+    <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="sheet__bar">
+        <button type="button" class="sheet__back" id="sheet-back" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+        <button type="button" class="sheet__close" data-close aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="sheet__body" id="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- Attract loop, shown after idleSeconds without a touch -->
+  <div class="attract" id="attract">
+    <img class="attract__img" src="assets/img/hero-skyline.jpg" alt="">
+    <div class="attract__scrim"></div>
+    <div class="attract__top">
+      <span class="brand__mark">BNEF</span>
+      <span class="attract__clock" id="attract-clock"></span>
+    </div>
+    <div class="attract__main">
+      <span class="eyebrow eyebrow--light">19–20 October 2026 · Royal Lancaster London</span>
+      <h1 class="attract__title">BNEF Summit<br><span>London</span></h1>
+      <div class="attract__card" id="attract-card"></div>
+    </div>
+    <div class="attract__foot">
+      <div class="attract__touch">
+        <span class="pulse"></span>
+        Touch anywhere to explore the agenda &amp; venue
+      </div>
+      <div class="attract__qr">
+        <div data-qr="attract"></div>
+        <span>Scan to<br>give feedback</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/vendor/qrcode.js"></script>
+<script src="assets/js/kiosk.js"></script>
+</body>
+</html>
