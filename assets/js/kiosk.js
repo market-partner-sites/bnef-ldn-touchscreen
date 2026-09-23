@@ -409,7 +409,7 @@
     return '<button type="button" class="session' + (s.track ? ' session--t' + (s.track.order % 3 + 1) : '') + '" data-session="' + esc(s.id) + '">' +
       '<span class="session__top">' + chipFor(s) + '</span>' +
       '<span class="session__title">' + esc(s.title) + '</span>' +
-      ((ppl.length || s.room) ? '<span class="session__foot"><span class="session__room">' + (s.room ? esc(s.room.label) : '') + '</span><span class="avatars">' + av + '</span></span>' : '') +
+      ((ppl.length || s.room) ? '<span class="session__foot"><span class="session__room">' + (s.room ? 'Location: ' + esc(s.room.label) : '') + '</span><span class="avatars">' + av + '</span></span>' : '') +
       '</button>';
   }
 
