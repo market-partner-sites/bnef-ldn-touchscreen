@@ -624,7 +624,7 @@
       .reduce(function (acc, sl) { return acc.concat(sl.sessions.filter(function (s) { return s.room && s.room.id === z.id; })); }, [])
       .slice(0, 3);
     card.innerHTML = '<h3>' + esc(z.label) + '</h3>' +
-      '<p class="zone-card__note">' + esc([info.floor.label, z.note].filter(Boolean).join(' · ')) + '</p>' +
+      '<p class="zone-card__note">' + esc([info.floor.name || info.floor.label, z.note].filter(Boolean).join(' · ')) + '</p>' +
       (here.length ? here.map(function (s) {
         var live = s.start <= t;
         return '<button type="button" class="next-row" data-session="' + esc(s.id) + '"><span class="next-row__time">' +

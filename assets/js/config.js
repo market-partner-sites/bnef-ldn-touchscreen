@@ -53,6 +53,7 @@ window.KIOSK_CONFIG = {
      Floor artwork is from "BNEF London Map App_01.pdf", cropped per floor
      into assets/img/map/*.svg. Zones are invisible tap targets drawn over
      the artwork, in that SVG's own units (w × h below).
+     label = floor tab text; name = full floor name shown on room details.
      kiosks: where each screen stands — pick one with ?kiosk=<name>. */
   venue: {
     defaultKiosk: 'registration',
@@ -63,6 +64,7 @@ window.KIOSK_CONFIG = {
       {
         "id": "lower-ground",
         "label": "Lower ground",
+        "name": "Lower Ground Floor",
         "image": "assets/img/map/lower-ground.svg",
         "w": 1000,
         "h": 685,
@@ -112,6 +114,7 @@ window.KIOSK_CONFIG = {
       {
         "id": "ground",
         "label": "Ground",
+        "name": "Ground Floor",
         "image": "assets/img/map/ground.svg",
         "w": 1000,
         "h": 885,
@@ -217,6 +220,7 @@ window.KIOSK_CONFIG = {
       {
         "id": "first",
         "label": "First",
+        "name": "First Floor",
         "image": "assets/img/map/first.svg",
         "w": 980,
         "h": 680,
