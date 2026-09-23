@@ -653,7 +653,6 @@
     qr.make();
     var svg = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
     $$('[data-qr]').forEach(function (n) { n.innerHTML = svg; });
-    $('#feedback-url').textContent = url.replace(/^https?:\/\//, '');
   }
 
   /* ================= attract loop ================= */
