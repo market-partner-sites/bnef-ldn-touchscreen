@@ -381,7 +381,7 @@
     var rows = upcoming.filter(function (sl) { return sl.kind !== 'break' || !/^summit close/i.test(sl.sessions[0].title); }).slice(0, 4);
     $('#next-heading').textContent = rows.length && rows[0].day !== today && t >= first.start ? 'Coming up ' + (DAY_NAMES[d(rows[0].start).getUTCDay()]) : 'Up next';
     nextList.innerHTML = rows.map(function (sl) {
-      var timeLabel = (sl.day !== today ? '<small style="display:block;font-size:20px;font-weight:400;color:var(--ink-3)">' + fmtDayShort(sl.start) + '</small>' : '') + fmtTime(sl.start);
+      var timeLabel = fmtTime(sl.start);
       if (sl.kind === 'breakout') {
         return '<button type="button" class="next-row" data-slot="' + sl.index + '"><span class="next-row__time">' + timeLabel + '</span>' +
           '<span class="next-row__title">' + esc(sl.title.replace(/\s*[-–]\s*choose your track/i, '')) +
