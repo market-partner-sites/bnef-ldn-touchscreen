@@ -65,7 +65,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   width: 1080px; height: 1920px;
   transform-origin: 50% 50%;
   transform: translate(-50%, -50%);
-  background: var(--bg);
+  /* dark stage edge: when the stage is scaled to fit, the browser can leave a
+     hairline at its border; dark matches the page behind so it never shows */
+  background: var(--navy-deep);
   display: grid;
   grid-template-rows: 150px 1fr 196px;
   overflow: hidden;
@@ -98,7 +100,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .clock__date { font-size: 22px; color: #a9b0bd; margin-top: 8px; letter-spacing: .02em; }
 
 /* ---------- views ---------- */
-.views { position: relative; overflow: hidden; }
+.views { position: relative; overflow: hidden; background: var(--bg); }
 .view {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
@@ -407,7 +409,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 
 /* ---------- attract ---------- */
 .attract {
-  position: absolute; inset: 0; z-index: 40;
+  position: absolute; inset: -2px; z-index: 40;
   background: var(--navy-deep); color: #fff;
   display: flex; flex-direction: column;
   opacity: 0; visibility: hidden; transition: opacity .6s, visibility 0s linear .6s;
