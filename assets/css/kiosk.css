@@ -433,7 +433,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .attract__card .meta { font-size: 25px; color: #a9b0bd; font-variant-numeric: tabular-nums; }
 .attract__card.fade { animation: cardIn .7s ease; }
 @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-.attract__foot { display: flex; justify-content: space-between; align-items: center; gap: 30px; padding: 60px var(--pad) 80px; }
+.attract__foot { display: flex; justify-content: space-between; align-items: center; gap: 30px; padding: 60px var(--pad) 240px; }
 .attract__touch { display: flex; align-items: center; gap: 48px; padding-left: 20px; font-size: 32px; font-weight: 600; }
 .pulse {
   width: 38px; height: 38px; border-radius: 50%; background: var(--accent); position: relative; flex: none;
