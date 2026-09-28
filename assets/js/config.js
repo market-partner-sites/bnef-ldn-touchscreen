@@ -37,7 +37,7 @@ window.KIOSK_CONFIG = {
     {
       "tier": "Partner",
       "name": "HSBC",
-      "logo": "",
+      "logo": "assets/img/sponsors/hsbc.png",
       "description": "HSBC is one of the world’s largest banking and financial services organisations, serving around 41 million customers across 56 countries and territories.\n\nOur ambition is to become a net zero bank by 2050. Supporting our customers is core to our strategy and financing their transition is both critical to them and aligned to our net zero ambition. We want to be our customers’ most trusted international financial partner through the transition, creating long-term value for them and our shareholders.",
       "url": "https://www.hsbc.com/who-we-are/hsbc-and-sustainability"
     },
