@@ -668,9 +668,9 @@
       return '<section class="sponsor-tier' + (ti === 0 ? ' sponsor-tier--lead' : '') + '"><h3>' + esc(g.tier) + '</h3><div class="sponsor-grid">' +
         g.items.map(function (i) {
           var sp = C.sponsors[i];
-          return '<button type="button" class="sponsor" data-sponsor="' + i + '">' +
+          return '<button type="button" class="sponsor-item" data-sponsor="' + i + '"><span class="sponsor">' +
             (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<span class="sponsor__name">' + esc(sp.name) + '</span>') +
-            ((sp.description || sp.url) ? '<span class="sponsor__more">About' + ICON.chev + '</span>' : '') + '</button>';
+            '</span>' + ((sp.description || sp.url) ? '<span class="sponsor__more">About' + ICON.chev + '</span>' : '') + '</button>';
         }).join('') + '</div></section>';
     }).join('');
   }
