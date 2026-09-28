@@ -52,7 +52,7 @@ window.KIOSK_CONFIG = {
       "tier": "Partner",
       "name": "Sunwoda",
       "logo": "assets/img/sponsors/sunwoda.png",
-      "description": "",
+      "description": "Founded in 1997, Sunwoda Electronic Co., Ltd. is a global leader in lithium-ion battery technology, listed on the Shenzhen Stock Exchange in 2011 (stock code: 300207) and on the SIX Swiss Exchange through the issuance of GDRs in 2022. Sunwoda delivers end-to-end battery solutions spanning cells, modules, BMS, battery systems, testing and recycling.\n\nLeveraging nearly three decades of battery expertise, Sunwoda has developed a comprehensive energy storage portfolio addressing generation-side, grid-side and user-side needs. Its product range includes 72Ah to 684Ah cells, battery packs, containerized ESS, outdoor cabinet systems and mobile energy solutions, supporting residential, C&I, utility-scale, rail transit, green mining and other applications.\n\nSunwoda ranks among the global top 10 in energy storage cell shipments and Chinese ESS integrators by global volume. It has also been consistently recognized as a BloombergNEF Tier 1 Energy Storage Manufacturer and included in BloombergNEF’s Storage Providers and Integrators Bankability Survey.",
       "url": "https://en.sunwoda.com/"
     }
   ],
