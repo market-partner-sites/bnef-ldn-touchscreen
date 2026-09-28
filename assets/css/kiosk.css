@@ -452,13 +452,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .attract__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: drift 40s ease-in-out infinite alternate; }
 @keyframes drift { from { transform: scale(1.05) translateX(-2%); } to { transform: scale(1.15) translateX(2%); } }
 .attract__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,14,26,.55) 0%, rgba(5,14,26,.35) 35%, rgba(5,14,26,.95) 72%); }
-.attract__top, .attract__main, .attract__foot { position: relative; }
+.attract__top, .attract__head, .attract__main, .attract__foot { position: relative; }
+.attract__head { padding: 30px var(--pad) 0; }
 .attract__top { display: flex; justify-content: space-between; align-items: center; padding: 60px var(--pad) 0; }
 .attract__clock { margin-left: auto; font-size: 44px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .attract__main { margin-top: auto; padding: 0 var(--pad); }
 /* nudge the date so it lines up with the ink edge of the big 'B' (the title glyph has wider side-bearing) */
-.attract__main .eyebrow { padding-left: 7px; }
-.attract__title { font-size: 105px; line-height: .95; margin: 22px 0 60px; letter-spacing: -.035em; font-weight: 700; }
+.attract__head .eyebrow { padding-left: 7px; }
+.attract__title { font-size: 105px; line-height: .95; margin: 22px 0 0; letter-spacing: -.035em; font-weight: 700; }
 .attract__title span { font-weight: 400; color: var(--accent); }
 .attract__card {
   min-height: 300px;
