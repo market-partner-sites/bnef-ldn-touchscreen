@@ -670,7 +670,7 @@
           var sp = C.sponsors[i];
           return '<button type="button" class="sponsor" data-sponsor="' + i + '">' +
             (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<span class="sponsor__name">' + esc(sp.name) + '</span>') +
-            ((sp.description || sp.url) ? '<span class="sponsor__more">About ' + esc(sp.name) + ICON.chev + '</span>' : '') + '</button>';
+            ((sp.description || sp.url) ? '<span class="sponsor__more">About' + ICON.chev + '</span>' : '') + '</button>';
         }).join('') + '</div></section>';
     }).join('');
   }
