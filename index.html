@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BNEF Summit Kiosk</title>
 <link rel="icon" href="assets/img/favicon.ico">
-<link rel="stylesheet" href="assets/css/kiosk.css?v=20260923111147">
+<link rel="stylesheet" href="assets/css/kiosk.css?v=20260928123144">
 </head>
 <body>
 
@@ -93,6 +93,16 @@
       </div>
     </section>
 
+    <!-- SPONSORS -->
+    <section class="view" id="view-sponsors" data-view="sponsors" aria-label="Sponsors">
+      <div class="view-head">
+        <h2 class="view-title">Sponsors</h2>
+      </div>
+      <div class="scroller">
+        <div id="sponsor-list" class="sponsor-list"></div>
+      </div>
+    </section>
+
     <!-- FEEDBACK -->
     <section class="view" id="view-feedback" data-view="feedback" aria-label="Feedback">
       <div class="feedback">
@@ -124,6 +134,10 @@
     <button type="button" class="dock__btn" data-go="map">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
       <span>Map</span>
+    </button>
+    <button type="button" class="dock__btn" data-go="sponsors">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg>
+      <span>Sponsors</span>
     </button>
     <button type="button" class="dock__btn" data-go="feedback">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5zM8 9h8M8 12h5"/></svg>
@@ -170,8 +184,8 @@
   <div class="toast" id="toast" role="status"></div>
 </div>
 
-<script src="assets/js/config.js?v=20260923111147"></script>
+<script src="assets/js/config.js?v=20260928123144"></script>
 <script src="assets/js/vendor/qrcode.js"></script>
-<script src="assets/js/kiosk.js?v=20260923111147"></script>
+<script src="assets/js/kiosk.js?v=20260928123144"></script>
 </body>
 </html>

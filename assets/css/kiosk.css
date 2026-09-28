@@ -55,6 +55,7 @@ body {
 }
 body.hide-cursor, body.hide-cursor * { cursor: none !important; }
 img { max-width: 100%; -webkit-user-drag: none; }
+[hidden] { display: none !important; }
 button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
 button:focus-visible { outline: 4px solid var(--accent); outline-offset: 4px; }
 svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -341,11 +342,34 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .steps span { font-size: 22px; color: var(--ink-3); }
 .feedback__url { margin-top: auto; font-size: 22px; color: var(--ink-3); word-break: break-all; }
 
+/* ---------- sponsors ---------- */
+.sponsor-list { padding: 40px var(--pad) 80px; display: flex; flex-direction: column; gap: 48px; }
+.sponsor-tier h3 {
+  margin: 0 0 20px; font-size: 22px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+}
+.sponsor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.sponsor-tier--lead .sponsor-grid { grid-template-columns: 1fr; }
+.sponsor {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 30px; min-height: 200px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+}
+.sponsor:active { background: var(--surface-2); }
+.sponsor img { max-width: 80%; max-height: 110px; object-fit: contain; }
+.sponsor-tier--lead .sponsor { min-height: 300px; padding: 40px; }
+.sponsor-tier--lead .sponsor img { max-width: 70%; max-height: 170px; }
+.sponsor__name { font-size: 40px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.sponsor__more { font-size: 20px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; }
+.sponsor__more svg { width: 22px; height: 22px; }
+
+.sponsor-detail__logo { background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 40px; display: flex; justify-content: center; margin-bottom: 30px; }
+.sponsor-detail__logo img { max-width: 70%; max-height: 180px; object-fit: contain; }
+
 /* ---------- dock ---------- */
 .dock {
   background: var(--navy);
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  padding: 22px 30px 34px; gap: 14px;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  padding: 22px 24px 34px; gap: 10px;
 }
 .dock__btn {
   border-radius: 20px; color: #a9b0bd;

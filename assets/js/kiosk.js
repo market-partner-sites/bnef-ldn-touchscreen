@@ -650,6 +650,40 @@
     go('map');
   }
 
+  /* ================= sponsors ================= */
+
+  function sponsorTiers() {
+    var order = [], by = {};
+    (C.sponsors || []).forEach(function (sp, i) {
+      if (!by[sp.tier]) { by[sp.tier] = []; order.push(sp.tier); }
+      by[sp.tier].push(i);
+    });
+    return order.map(function (t) { return { tier: t, items: by[t] }; });
+  }
+
+  function renderSponsors() {
+    var el = $('#sponsor-list');
+    if (!el) return;
+    el.innerHTML = sponsorTiers().map(function (g, ti) {
+      return '<section class="sponsor-tier' + (ti === 0 ? ' sponsor-tier--lead' : '') + '"><h3>' + esc(g.tier) + '</h3><div class="sponsor-grid">' +
+        g.items.map(function (i) {
+          var sp = C.sponsors[i];
+          return '<button type="button" class="sponsor" data-sponsor="' + i + '">' +
+            (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<span class="sponsor__name">' + esc(sp.name) + '</span>') +
+            (sp.description ? '<span class="sponsor__more">About ' + esc(sp.name) + ICON.chev + '</span>' : '') + '</button>';
+        }).join('') + '</div></section>';
+    }).join('');
+  }
+
+  function sponsorDetail(i) {
+    var sp = C.sponsors[i];
+    if (!sp) return '';
+    return (sp.logo ? '<div class="sponsor-detail__logo"><img src="' + esc(asset(sp.logo)) + '" alt=""></div>' : '') +
+      '<div class="detail__meta"><span class="chip chip--t1">' + esc(sp.tier) + '</span></div>' +
+      '<h2 class="detail__title" id="sheet-title">' + esc(sp.name) + '</h2>' +
+      String(sp.description || '').split(/\n\s*\n/).map(function (para) { return '<p class="detail__desc">' + esc(para) + '</p>'; }).join('');
+  }
+
   /* ================= feedback / QR ================= */
 
   function renderQr() {
@@ -725,6 +759,7 @@
       if ((el = e.target.closest('[data-go]'))) { closeSheet(); go(el.dataset.go); return; }
       if ((el = e.target.closest('[data-close]'))) { closeSheet(); return; }
       if ((el = e.target.closest('#sheet-back'))) { sheetBack(); return; }
+      if ((el = e.target.closest('[data-sponsor]'))) { var spi = +el.dataset.sponsor; if (!C.sponsors[spi].description) return; openSheet(function () { return sponsorDetail(spi); }); return; }
       if ((el = e.target.closest('[data-person]'))) { var pid = el.dataset.person; openSheet(function () { return personDetail(pid); }); return; }
       if ((el = e.target.closest('[data-session]'))) { var sid = el.dataset.session; openSheet(function () { return sessionDetail(sid); }); return; }
       if ((el = e.target.closest('.next-row[data-slot]'))) { scrollToSlot(+el.dataset.slot); return; }
@@ -778,6 +813,7 @@
     if (params.get('cursor') === 'hide') document.body.classList.add('hide-cursor');
     tick();
     renderQr();
+    renderSponsors();
     wire();
     state.floor = kioskSpot().floor;
 
