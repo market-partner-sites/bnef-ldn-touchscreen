@@ -348,7 +348,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   margin: 0 0 20px; font-size: 22px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
 }
 .sponsor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.sponsor-tier--lead .sponsor-grid { grid-template-columns: repeat(2, 1fr); }
 .sponsor {
   background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg);
   padding: 30px; min-height: 200px;
@@ -357,8 +356,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .sponsor-item { display: flex; flex-direction: column; gap: 8px; text-align: left; }
 .sponsor-item:active .sponsor { background: var(--surface-2); }
 .sponsor img { max-width: 80%; max-height: 110px; object-fit: contain; }
-.sponsor-tier--lead .sponsor { min-height: 250px; padding: 36px 30px; }
-.sponsor-tier--lead .sponsor img { max-width: 85%; max-height: 150px; }
 .sponsor__name { font-size: 40px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
 .sponsor__more { align-self: center; font-size: 20px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 4px; }
 .sponsor__more svg { width: 22px; height: 22px; }
