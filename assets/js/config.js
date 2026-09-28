@@ -13,6 +13,44 @@ window.KIOSK_CONFIG = {
   feedbackUrl: 'https://example.com/bnef-london-2026-feedback',
   feedbackShortLabel: 'Scan to share your feedback',
 
+  /* ---- Sponsors ---------------------------------------------------------
+     Shown on the Sponsors screen, grouped by tier in the order tiers first
+     appear here. The first tier gets the large cards. Logos live in
+     assets/img/sponsors/ (leave logo empty to show the name instead).
+     Tap a sponsor to read its description. */
+  sponsors: [
+    {
+      "tier": "Partner Plus",
+      "name": "SolaX Power",
+      "logo": "assets/img/sponsors/solax-power.png",
+      "description": "Established in 2012, SolaX Power is a publicly listed global leader specializing in solar energy storage and smart energy technologies. Offering a comprehensive product portfolio including inverters, batteries, energy storage systems, EV chargers, heat pumps, and integrated smart energy solutions, SolaX serves diverse application scenarios across residential, commercial and industrial, and utility-scale projects. With a strong commitment to innovation, driven by an R&D team representing 30% of its workforce, SolaX continues to deliver market-leading solutions worldwide. Dedicated to sustainability and backed by extensive global partnerships, SolaX helps customers in over 130 countries achieve their energy transition goals and significantly reduce carbon emissions."
+    },
+    {
+      "tier": "Partner Plus",
+      "name": "Sungrow",
+      "logo": "assets/img/sponsors/sungrow.png",
+      "description": "Sungrow, a global leader in renewable energy technology, has pioneered sustainable power solutions for over 28 years. As of December 2024, Sungrow has installed 740 GW of power electronic converters worldwide. The Company is recognized as the world's No. 1 on PV inverter shipments (S&P Global Commodity Insights) and the world's most bankable energy storage company (BloombergNEF). Its innovations power clean energy projects in over 180 countries, supported by a network of 520 service outlets guaranteeing excellent customer experience. At Sungrow, we're committed to bridging to a sustainable future through cutting-edge technology and unparalleled service. For more information, please visit: www.sungrowpower.com."
+    },
+    {
+      "tier": "Partner",
+      "name": "HSBC",
+      "logo": "",
+      "description": "HSBC is one of the world’s largest banking and financial services organisations, serving around 41 million customers across 56 countries and territories.\n\nOur ambition is to become a net zero bank by 2050. Supporting our customers is core to our strategy and financing their transition is both critical to them and aligned to our net zero ambition. We want to be our customers’ most trusted international financial partner through the transition, creating long-term value for them and our shareholders.\n\nRead more about our climate strategy: www.hsbc.com/who-we-are/hsbc-and-sustainability"
+    },
+    {
+      "tier": "Partner",
+      "name": "Google",
+      "logo": "assets/img/sponsors/google.png",
+      "description": "Google’s Energy & Power team drives the strategy, infrastructure development, and solutions required to power the company’s global operations. The team is recognized for designing innovative industry standards for responsible energy growth and their efforts to scale the deployment of advanced energy technologies that help unlock cleaner, more reliable, and affordable energy systems worldwide. Visit datacenters.google/energy to learn more about Google data centers and the team’s efforts to build the systems needed to power a brighter future."
+    },
+    {
+      "tier": "Partner",
+      "name": "Sunwoda",
+      "logo": "assets/img/sponsors/sunwoda.png",
+      "description": ""
+    }
+  ],
+
   /* ---- Behaviour -------------------------------------------------------- */
   idleSeconds: 90,              // return to the attract screen after this long untouched
   dataRefreshMinutes: 5,        // re-fetch agenda/speakers this often
