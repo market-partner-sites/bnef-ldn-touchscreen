@@ -670,7 +670,7 @@
           var sp = C.sponsors[i];
           return '<button type="button" class="sponsor" data-sponsor="' + i + '">' +
             (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<span class="sponsor__name">' + esc(sp.name) + '</span>') +
-            (sp.description ? '<span class="sponsor__more">About ' + esc(sp.name) + ICON.chev + '</span>' : '') + '</button>';
+            ((sp.description || sp.url) ? '<span class="sponsor__more">About ' + esc(sp.name) + ICON.chev + '</span>' : '') + '</button>';
         }).join('') + '</div></section>';
     }).join('');
   }
@@ -681,10 +681,19 @@
     return (sp.logo ? '<div class="sponsor-detail__logo"><img src="' + esc(asset(sp.logo)) + '" alt=""></div>' : '') +
       '<div class="detail__meta"><span class="chip chip--t1">' + esc(sp.tier) + '</span></div>' +
       '<h2 class="detail__title" id="sheet-title">' + esc(sp.name) + '</h2>' +
-      String(sp.description || '').split(/\n\s*\n/).map(function (para) { return '<p class="detail__desc">' + esc(para) + '</p>'; }).join('');
+      String(sp.description || '').split(/\n\s*\n/).filter(Boolean).map(function (para) { return '<p class="detail__desc">' + esc(para) + '</p>'; }).join('') +
+      (sp.url ? '<div class="sponsor-qr"><div class="sponsor-qr__code">' + qrSvg(sp.url) + '</div>' +
+        '<div><b>Scan to find out more</b><span>Open your phone camera and point it at the code to visit ' + esc(sp.name) + '.</span></div></div>' : '');
   }
 
   /* ================= feedback / QR ================= */
+
+  function qrSvg(url) {
+    var qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    return qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+  }
 
   function renderQr() {
     var url = C.feedbackUrl;
@@ -759,7 +768,7 @@
       if ((el = e.target.closest('[data-go]'))) { closeSheet(); go(el.dataset.go); return; }
       if ((el = e.target.closest('[data-close]'))) { closeSheet(); return; }
       if ((el = e.target.closest('#sheet-back'))) { sheetBack(); return; }
-      if ((el = e.target.closest('[data-sponsor]'))) { var spi = +el.dataset.sponsor; if (!C.sponsors[spi].description) return; openSheet(function () { return sponsorDetail(spi); }); return; }
+      if ((el = e.target.closest('[data-sponsor]'))) { var spi = +el.dataset.sponsor; if (!C.sponsors[spi].description && !C.sponsors[spi].url) return; openSheet(function () { return sponsorDetail(spi); }); return; }
       if ((el = e.target.closest('[data-person]'))) { var pid = el.dataset.person; openSheet(function () { return personDetail(pid); }); return; }
       if ((el = e.target.closest('[data-session]'))) { var sid = el.dataset.session; openSheet(function () { return sessionDetail(sid); }); return; }
       if ((el = e.target.closest('.next-row[data-slot]'))) { scrollToSlot(+el.dataset.slot); return; }

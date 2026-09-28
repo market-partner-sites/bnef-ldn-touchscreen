@@ -365,6 +365,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .sponsor-detail__logo { background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg); padding: 40px; display: flex; justify-content: center; margin-bottom: 30px; }
 .sponsor-detail__logo img { max-width: 70%; max-height: 180px; object-fit: contain; }
 
+.sponsor-qr { display: flex; align-items: center; gap: 36px; margin-top: 10px; padding: 30px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg); }
+.sponsor-qr__code { width: 220px; height: 220px; flex: none; }
+.sponsor-qr__code svg { display: block; width: 100%; height: 100%; }
+.sponsor-qr__code svg rect { fill: #fff; stroke: none; }
+.sponsor-qr__code svg path { fill: #151a26; stroke: none; }
+.sponsor-qr b { display: block; font-size: 30px; margin-bottom: 8px; }
+.sponsor-qr span { font-size: 23px; color: var(--ink-2); line-height: 1.45; }
+
 /* ---------- dock ---------- */
 .dock {
   background: var(--navy);
