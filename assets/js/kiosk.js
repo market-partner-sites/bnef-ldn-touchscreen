@@ -132,15 +132,14 @@
   // Bundled files (inlined as data: URIs in the single-file preview build).
   function asset(path) { return (window.KIOSK_ASSETS && window.KIOSK_ASSETS[path]) || path; }
 
-  // Speaker photos are saved locally as assets/img/speakers/<file id>.jpg so the
-  // kiosk doesn't depend on the photo server. New speakers added later have no
-  // local copy yet: the live URL is used, then initials.
+  // Speaker photos come straight from the speakers API (profile_picture.absoluteUrl),
+  // so new or changed photos appear automatically. If a photo can't load, the
+  // speaker's initials are shown instead. (The single-file hosted preview can't
+  // load outside images, so it uses copies bundled into the preview file.)
   function localPhoto(url) {
+    if (!window.KIOSK_ASSETS) return url;
     var m = /\/Avatar\/([0-9a-f]+)\.(?:jpe?g|png|webp)/i.exec(url || '');
-    if (!m) return url;
-    var path = 'assets/img/speakers/' + m[1] + '.jpg';
-    if (window.KIOSK_ASSETS) return window.KIOSK_ASSETS[path] || url;
-    return path;
+    return (m && window.KIOSK_ASSETS['assets/img/speakers/' + m[1] + '.jpg']) || url;
   }
 
   function isBreak(s) {

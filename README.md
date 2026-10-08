@@ -60,10 +60,10 @@ does a full reload at 04:00.
 For a quick local test: `python3 -m http.server` in this folder, then open
 http://localhost:8000.
 
-Speaker photos are saved in `assets/img/speakers/` (named by the platform's
-photo id), so they show even if the photo server is unreachable. A speaker
-added after this snapshot uses the live photo URL, then initials. To refresh
-the saved photos, ask Claude to re-run the photo export.
+Speaker photos load directly from the speakers API (`profile_picture.absoluteUrl`),
+so new or updated photos appear automatically; if one can't load, the speaker's
+initials show instead. The kiosk needs internet access to show photos.
+`assets/img/speakers/` is no longer used by the kiosk and can be deleted.
 
 ## Running on the totem
 
