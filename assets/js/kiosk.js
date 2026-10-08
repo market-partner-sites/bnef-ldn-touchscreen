@@ -521,6 +521,7 @@
       b.setAttribute('aria-selected', on ? 'true' : 'false');
     });
     setDay(state.day);
+    scrollAgendaToNow(false);
   }
 
   function defaultDay() {
@@ -529,10 +530,19 @@
     return now() > wallFromIso(state.days[state.days.length - 1] + 'T23:59') ? state.days[state.days.length - 1] : state.days[0];
   }
 
+  // Position of an element inside the agenda scroller (independent of the
+  // header/tabs above it and of the stage scaling).
+  function topInScroller(el) {
+    var sc = $('#agenda-scroller');
+    var scale = sc.getBoundingClientRect().height / sc.offsetHeight || 1;
+    return (el.getBoundingClientRect().top - sc.getBoundingClientRect().top) / scale + sc.scrollTop;
+  }
+
+  // Anchor the live session (or the NOW marker) near the top of the agenda.
   function scrollAgendaToNow(smooth) {
     var sc = $('#agenda-scroller');
     var target = $('.day-panel.is-active .slot.is-now') || $('.day-panel.is-active .now-rule');
-    sc.scrollTo({ top: target ? Math.max(0, target.offsetTop - 30) : 0, behavior: smooth ? 'smooth' : 'auto' });
+    sc.scrollTo({ top: target ? Math.max(0, topInScroller(target) - 30) : 0, behavior: smooth ? 'smooth' : 'auto' });
   }
 
   function scrollToSlot(idx) {
@@ -542,7 +552,7 @@
     state.day = sl.day;
     setAgenda(sl.agenda);
     var el = $('.slot[data-slot="' + idx + '"]');
-    if (el) $('#agenda-scroller').scrollTop = Math.max(0, el.offsetTop - 30);
+    if (el) $('#agenda-scroller').scrollTop = Math.max(0, topInScroller(el) - 30);
   }
 
   /* ================= sheet (session + speaker detail) ================= */
