@@ -1,3 +1,5 @@
 .DS_Store
 # one-off photo export bundle; the individual JPGs are what the kiosk uses
 assets/img/speakers/_source-bundle.json
+README.md
+screenshots/
