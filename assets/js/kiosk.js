@@ -155,7 +155,17 @@
     f.zones.forEach(function (z) { zoneIndex[z.id] = { zone: z, floor: f }; });
   });
 
+  // Platform location ids (e.g. "beech_room_2") -> map zone (e.g. "beech-2").
+  function zoneForLocationId(lid) {
+    if (!lid) return null;
+    var norm = function (x) { return String(x).toLowerCase().replace(/room/g, '').replace(/[^a-z0-9]/g, ''); };
+    var key = norm(lid);
+    return Object.keys(zoneIndex).filter(function (id) { return norm(id) === key || norm(zoneIndex[id].zone.label) === key; })[0] || null;
+  }
+
   function roomFor(session, trackOrder) {
+    var lz = zoneForLocationId(session.locationId);
+    if (lz) return { id: lz, label: zoneIndex[lz].zone.label };
     // A real room name from the API wins if it matches a zone label.
     var raw = (session.room || '').trim();
     if (raw) {
@@ -254,7 +264,7 @@
         } : null
       };
       ss.side = !!side;
-      ss.room = side ? ((s.room || '').trim() ? roomFor(s, null) : null) : roomFor(s, track ? (track.order || 0) : null);
+      ss.room = side ? (((s.room || '').trim() || s.locationId) ? roomFor(s, null) : null) : roomFor(s, track ? (track.order || 0) : null);
       sessionById[ss.id] = ss;
       return ss;
     }
