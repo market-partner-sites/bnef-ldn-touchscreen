@@ -327,8 +327,12 @@
     return idx.charAt(0) === 's' ? state.sideSlots[+idx.slice(1)] : state.slots[+idx];
   }
 
-  function slotsNow(t) { return state.slots.filter(function (s) { return s.start <= t && t < s.end; }); }
-  function slotsAfter(t) { return state.slots.filter(function (s) { return s.start > t; }); }
+  // Main + side agenda together, time-sorted (Home, map room details, idle screen).
+  function allSlots() {
+    return state.slots.concat(state.sideSlots || []).sort(function (a, b) { return a.start - b.start || (a.agenda === 'side' ? 1 : -1); });
+  }
+  function slotsNow(t) { return allSlots().filter(function (s) { return s.start <= t && t < s.end; }); }
+  function slotsAfter(t) { return allSlots().filter(function (s) { return s.start > t; }); }
 
   /* ================= navigation ================= */
 
@@ -396,7 +400,7 @@
         var pct = Math.max(0, Math.min(100, (t - s.start) / (s.end - s.start) * 100));
         html += '<button type="button" class="now-card' + (compact ? ' now-card--compact' : '') + '" data-session="' + esc(s.id) + '">' +
           '<span class="now-card__meta">' + (live ? '<span class="live">Live</span>' : '') +
-          '<span>' + fmtTime(s.start) + ' – ' + fmtTime(s.end) + '</span>' + (s.track ? '<span>· Track ' + (s.track.order + 1) + '</span>' : '') + '</span>' +
+          '<span>' + fmtTime(s.start) + ' – ' + fmtTime(s.end) + '</span>' + chipFor(s) + '</span>' +
           '<span class="now-card__title">' + esc(s.title) + '</span>' +
           (s.room ? '<span class="now-card__room">Location: ' + esc(s.room.label) + '</span>' : '') +
           '<span class="now-card__chev">' + ICON.chev + '</span>' +
@@ -414,12 +418,13 @@
       var timeLabel = fmtTime(sl.start);
       if (sl.kind === 'breakout') {
         return '<button type="button" class="next-row" data-slot="' + sl.index + '"><span class="next-row__time">' + timeLabel + '</span>' +
-          '<span class="next-row__title">' + esc(sl.title.replace(/\s*[-–]\s*choose your track/i, '')) +
-          '<span class="next-row__room">' + sl.sessions.length + ' parallel tracks · choose one</span></span>' + ICON.chev + '</button>';
+          '<span class="next-row__body"><span class="next-row__title">' + esc(sl.title.replace(/\s*[-–]\s*choose your track/i, '')) + '</span>' +
+          '<span class="next-row__meta"><span class="chip">Breakout tracks</span><span>' + sl.sessions.length + ' parallel tracks · choose one</span></span></span>' + ICON.chev + '</button>';
       }
       var s = sl.sessions[0];
       return '<button type="button" class="next-row" data-session="' + esc(s.id) + '"><span class="next-row__time">' + timeLabel + '</span>' +
-        '<span class="next-row__title">' + esc(s.title) + (s.room ? '<span class="next-row__room">' + esc(s.room.label) + '</span>' : '') + '</span>' + ICON.chev + '</button>';
+        '<span class="next-row__body"><span class="next-row__title">' + esc(s.title) + '</span>' +
+        '<span class="next-row__meta">' + chipFor(s) + (s.room ? '<span>Location: ' + esc(s.room.label) + '</span>' : '') + '</span></span>' + ICON.chev + '</button>';
     }).join('') || '<p class="empty-note">That\'s everything on the programme.</p>';
     // Show as many Up next rows as fit the space above the tiles, never a cut-off row.
     var block = nextList.parentNode;
@@ -679,7 +684,7 @@
     var info = state.zone && zoneIndex[state.zone];
     if (!info) { card.innerHTML = '<p class="zone-card__hint"><span class="pulse"></span>Tap a room to see what\'s on there</p>'; return; }
     var z = info.zone, t = now();
-    var here = state.slots.filter(function (sl) { return sl.end > t; })
+    var here = allSlots().filter(function (sl) { return sl.end > t; })
       .reduce(function (acc, sl) { return acc.concat(sl.sessions.filter(function (s) { return s.room && s.room.id === z.id; })); }, [])
       .slice(0, 3);
     card.innerHTML = '<h3>' + esc(z.label) + '</h3>' +
