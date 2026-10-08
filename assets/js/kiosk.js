@@ -23,6 +23,8 @@
     credits: {},        // sessionId -> {speaker:[], moderator:[], presentations:[]}
     sessionsByPerson: {},
     view: 'home',
+    agenda: 'main',     // 'main' | 'side'
+    sideSlots: [],
     day: null,
     floor: null,
     zone: null,
@@ -198,7 +200,7 @@
 
   function buildModel(agendas, regs, rels) {
     var agenda = agendas.filter(function (a) { return a.id === 'main'; })[0] || agendas[0];
-    var items = agenda.items || [];
+    var sideAgenda = agendas.filter(function (a) { return a !== agenda && /side/i.test(a.id + ' ' + a.name); })[0];
     var regIndex = {};
     regs.forEach(function (r) { if (!r.profile || r.profile.profile_visible !== false) regIndex[r.id] = r; });
 
@@ -219,6 +221,12 @@
       });
     });
 
+    var sessionById = {};
+    var slotBySessionId = {};
+
+    // Builds the time-sorted slot list for one agenda. Side-agenda sessions
+    // keep whatever room the platform gives them (no Main Plenary default).
+    function buildSlots(items, side) {
     var sessions = items.filter(function (i) { return i.type === 'Session'; });
     var tracks = items.filter(function (i) { return i.type === 'BreakoutTrack'; });
     var breakouts = items.filter(function (i) { return i.type === 'Breakout'; });
@@ -226,7 +234,6 @@
     tracks.forEach(function (t) { trackById[t.id] = t; });
 
     var slots = [];
-    var sessionById = {};
 
     function mkSession(s, track) {
       var ss = {
@@ -234,7 +241,8 @@
         id: s.id,
         title: s.name.trim(),
         subtitle: (s.subtitle || '').trim(),
-        synopsis: (s.synopsisMd || '').trim(),
+        // plain text: drop markdown links (keep their text) and emphasis markers
+        synopsis: (s.synopsisMd || '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/\*+/g, '').trim(),
         start: wallFromIso(s.localStart),
         end: wallFromIso(s.localEnd),
         isBreak: isBreak(s),
@@ -245,7 +253,8 @@
           topic: track.name.replace(/^\s*Track\s*\d+\s*:?\s*/i, '').trim()
         } : null
       };
-      ss.room = roomFor(s, track ? (track.order || 0) : null);
+      ss.side = !!side;
+      ss.room = side ? ((s.room || '').trim() ? roomFor(s, null) : null) : roomFor(s, track ? (track.order || 0) : null);
       sessionById[ss.id] = ss;
       return ss;
     }
@@ -273,16 +282,22 @@
         sl.openEnded = true;
       }
       sl.day = dayKey(sl.start);
-      sl.index = i;
+      sl.agenda = side ? 'side' : 'main';
+      sl.index = (side ? 's' : '') + i;
     });
 
-    var slotBySessionId = {};
     slots.forEach(function (sl) { sl.sessions.forEach(function (s) { slotBySessionId[s.id] = sl; }); });
+    return slots;
+    }
+
+    var slots = buildSlots(agenda.items || [], false);
+    var sideSlots = sideAgenda ? buildSlots(sideAgenda.items || [], true) : [];
 
     var days = [];
-    slots.forEach(function (sl) { if (days.indexOf(sl.day) === -1) days.push(sl.day); });
+    slots.concat(sideSlots).forEach(function (sl) { if (days.indexOf(sl.day) === -1) days.push(sl.day); });
 
     state.slots = slots;
+    state.sideSlots = sideSlots;
     state.days = days.sort();
     state.sessionById = sessionById;
     state.slotBySessionId = slotBySessionId;
@@ -296,6 +311,11 @@
     var out = [];
     ROLE_ORDER.forEach(function (r) { c[r].forEach(function (p) { out.push(p); }); });
     return out;
+  }
+
+  function slotByIdx(idx) {
+    idx = String(idx);
+    return idx.charAt(0) === 's' ? state.sideSlots[+idx.slice(1)] : state.slots[+idx];
   }
 
   function slotsNow(t) { return state.slots.filter(function (s) { return s.start <= t && t < s.end; }); }
@@ -325,6 +345,7 @@
     if (s.track) return '<span class="chip chip--t' + (s.track.order % 3 + 1) + '">Track ' + (s.track.order + 1) + (s.track.topic ? ' · ' + esc(s.track.topic) : '') + '</span>';
     if (s.isPlenary) return '<span class="chip chip--main">Main stage</span>';
     if (s.isBreak) return '<span class="chip">Networking</span>';
+    if (s.side) return '<span class="chip">Side agenda</span>';
     return '<span class="chip">Session</span>';
   }
 
@@ -421,9 +442,12 @@
 
   function renderAgenda() {
     var list = $('#agenda-list');
-    list.innerHTML = state.days.map(function (day) {
-      return '<div class="day-panel' + (day === state.day ? ' is-active' : '') + '" data-day-panel="' + day + '">' +
-        state.slots.filter(function (sl) { return sl.day === day; }).map(function (sl) {
+    list.innerHTML = [['main', state.slots], ['side', state.sideSlots]].map(function (pair) {
+     return state.days.map(function (day) {
+      var daySlots = pair[1].filter(function (sl) { return sl.day === day; });
+      return '<div class="day-panel' + (day === state.day && pair[0] === state.agenda ? ' is-active' : '') + '" data-day-panel="' + day + '" data-agenda-panel="' + pair[0] + '">' +
+        (daySlots.length ? '' : '<p class="empty-note agenda-empty">No ' + (pair[0] === 'side' ? 'side agenda ' : '') + 'sessions on this day.</p>') +
+        daySlots.map(function (sl) {
           var time = '<div class="slot__time">' + fmtTime(sl.start) + (sl.openEnded ? '' : '<small>to ' + fmtTime(sl.end) + '</small>') + '</div>';
           var body;
           if (sl.kind === 'break') {
@@ -436,6 +460,7 @@
           }
           return '<div class="slot slot--' + sl.kind + '" data-slot="' + sl.index + '">' + time + body + '</div>';
         }).join('') + '</div>';
+     }).join('');
     }).join('');
     markAgendaNow();
   }
@@ -444,14 +469,19 @@
     var t = now();
     $$('.now-rule').forEach(function (n) { n.remove(); });
     var ruleBefore = null;
-    $$('#agenda-list .slot').forEach(function (el) {
-      var sl = state.slots[+el.dataset.slot];
+    $$('#agenda-list .day-panel.is-active .slot').forEach(function (el) {
+      var sl = slotByIdx(el.dataset.slot);
       var isNow = sl.start <= t && t < sl.end;
       el.classList.toggle('is-now', isNow);
       el.classList.toggle('is-past', t >= sl.end && sl.day === dayKey(t));
       if (!ruleBefore && sl.day === dayKey(t) && sl.start > t && t >= state.slots[0].start) ruleBefore = el;
     });
-    var nowEl = $('#agenda-list .slot.is-now');
+    $$('#agenda-list .day-panel:not(.is-active) .slot').forEach(function (el) {
+      var sl = slotByIdx(el.dataset.slot);
+      el.classList.toggle('is-now', sl.start <= t && t < sl.end);
+      el.classList.toggle('is-past', t >= sl.end && sl.day === dayKey(t));
+    });
+    var nowEl = $('#agenda-list .day-panel.is-active .slot.is-now');
     if (!nowEl && ruleBefore) {
       var rule = document.createElement('div');
       rule.className = 'now-rule';
@@ -463,8 +493,19 @@
   function setDay(day) {
     state.day = day;
     $$('#day-toggle button').forEach(function (b) { b.classList.toggle('is-active', b.dataset.day === day); });
-    $$('.day-panel').forEach(function (p) { p.classList.toggle('is-active', p.dataset.dayPanel === day); });
+    $$('.day-panel').forEach(function (p) { p.classList.toggle('is-active', p.dataset.dayPanel === day && p.dataset.agendaPanel === state.agenda); });
     $('#agenda-scroller').scrollTop = 0;
+    markAgendaNow();
+  }
+
+  function setAgenda(which) {
+    state.agenda = which;
+    $$('#agenda-tabs [data-agenda]').forEach(function (b) {
+      var on = b.dataset.agenda === which;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    setDay(state.day);
   }
 
   function defaultDay() {
@@ -480,9 +521,11 @@
   }
 
   function scrollToSlot(idx) {
-    var sl = state.slots[idx];
+    var sl = slotByIdx(idx);
     go('agenda');
-    setDay(sl.day);
+    state.agenda = sl.agenda;
+    state.day = sl.day;
+    setAgenda(sl.agenda);
     var el = $('.slot[data-slot="' + idx + '"]');
     if (el) $('#agenda-scroller').scrollTop = Math.max(0, el.offsetTop - 30);
   }
@@ -735,7 +778,7 @@
   function showAttract() {
     closeSheet();
     go('home');
-    state.day = defaultDay(); setDay(state.day);
+    state.day = defaultDay(); state.agenda = 'main'; setAgenda('main');
     state.zone = null; state.floor = kioskSpot().floor; renderFloorToggle(); renderMap();
     attractIdx = 0; paintAttractCard();
     clearInterval(attractTimer); attractTimer = setInterval(paintAttractCard, 7000);
@@ -771,7 +814,8 @@
       if ((el = e.target.closest('[data-sponsor]'))) { var spi = +el.dataset.sponsor; if (!C.sponsors[spi].description && !C.sponsors[spi].url) return; openSheet(function () { return sponsorDetail(spi); }); return; }
       if ((el = e.target.closest('[data-person]'))) { var pid = el.dataset.person; openSheet(function () { return personDetail(pid); }); return; }
       if ((el = e.target.closest('[data-session]'))) { var sid = el.dataset.session; openSheet(function () { return sessionDetail(sid); }); return; }
-      if ((el = e.target.closest('.next-row[data-slot]'))) { scrollToSlot(+el.dataset.slot); return; }
+      if ((el = e.target.closest('.next-row[data-slot]'))) { scrollToSlot(el.dataset.slot); return; }
+      if ((el = e.target.closest('#agenda-tabs [data-agenda]'))) { setAgenda(el.dataset.agenda); return; }
       if ((el = e.target.closest('#day-toggle [data-day]'))) { setDay(el.dataset.day); return; }
       if ((el = e.target.closest('#floor-toggle [data-floor]'))) { state.floor = el.dataset.floor; state.zone = null; renderFloorToggle(); renderMap(); return; }
       if ((el = e.target.closest('[data-zone]'))) {
