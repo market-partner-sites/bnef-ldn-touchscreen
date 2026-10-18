@@ -478,7 +478,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .bio__role { font-size: 21px; color: var(--ink-2); margin: 0; }
 .bio__text { font-size: 21px; line-height: 1.55; color: var(--ink-2); max-width: 920px; }
 .bio__text p { margin: 0 0 16px; }
-.bio__sessions { margin-top: 20px; }
+.bio__sessions { margin-top: 44px; }
 
 /* ---------- attract ---------- */
 .attract {

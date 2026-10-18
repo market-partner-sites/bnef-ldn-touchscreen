@@ -658,7 +658,7 @@
       (ids.length ? '<div class="bio__sessions"><div class="credits__label">Appearing in</div>' : '<div>') +
       ids.map(function (id) {
         var s = state.sessionById[id];
-        return '<button type="button" class="next-row" data-session="' + esc(id) + '"><span class="next-row__time"><small style="display:block;font-size:20px;font-weight:400;color:var(--ink-3)">' + fmtDayShort(s.start) + '</small>' + fmtTime(s.start) + '</span>' +
+        return '<button type="button" class="next-row" data-session="' + esc(id) + '"><span class="next-row__time">' + fmtTime(s.start) + '<small style="display:block;font-size:20px;font-weight:400;color:var(--ink-3);margin-top:2px">' + fmtDayShort(s.start) + '</small></span>' +
           '<span class="next-row__title">' + esc(s.title) + '</span>' + ICON.chev + '</button>';
       }).join('') + '</div>';
   }
