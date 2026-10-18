@@ -360,7 +360,7 @@
 
   function chipFor(s) {
     if (s.track) return '<span class="chip chip--t' + (s.track.order % 3 + 1) + '">Track ' + (s.track.order + 1) + (s.track.topic ? ' · ' + esc(s.track.topic) : '') + '</span>';
-    if (s.isPlenary) return '<span class="chip chip--main">Main stage</span>';
+    if (s.isPlenary) return '<span class="chip chip--main">Plenary</span>';
     if (s.isBreak) return '<span class="chip">Networking</span>';
     if (s.side) return '<span class="chip">Side agenda</span>';
     return '<span class="chip">Session</span>';
