@@ -10,7 +10,7 @@ window.KIOSK_CONFIG = {
   /* ---- Feedback ---------------------------------------------------------
      The QR code on the Feedback screen and attract loop points here.
      TODO: replace with the real survey link before the event. */
-  feedbackUrl: 'https://example.com/bnef-london-2026-feedback',
+  feedbackUrl: 'https://bloombergresearch.qualtrics.com/jfe/form/SV_1X5rJ2ms8EoRO8m',
   feedbackShortLabel: 'Scan to share your feedback',
 
   /* ---- Sponsors ---------------------------------------------------------
