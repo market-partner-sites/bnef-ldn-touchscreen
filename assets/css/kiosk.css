@@ -453,7 +453,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .detail__time { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink-2); }
 .detail__title { margin: 0 0 22px; font-size: 52px; line-height: 1.1; letter-spacing: -.02em; font-weight: 700; text-wrap: balance; }
 .detail__sub { margin: -8px 0 22px; font-size: 26px; color: var(--ink-2); }
-.detail__desc { margin: 0 0 30px; font-size: 27px; line-height: 1.55; color: var(--ink-2); max-width: 900px; }
+.detail__desc { margin: 0 0 22px; font-size: 21px; line-height: 1.55; color: var(--ink-2); max-width: 900px; }
 .map-link {
   display: inline-flex; align-items: center; gap: 9px;
   min-height: 57px; padding: 0 22px; border-radius: 999px;
