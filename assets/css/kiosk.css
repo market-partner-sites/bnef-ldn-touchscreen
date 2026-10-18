@@ -163,7 +163,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   display: flex; flex-direction: column; gap: 28px;
 }
 .now-list { display: flex; flex-direction: column; gap: 14px; }
-.next-block { flex: 1; min-height: 0; overflow: hidden; }
+.next-block { flex: 1; min-height: 0; overflow: hidden; margin-top: 18px; }
 .next-list { display: flex; flex-direction: column; }
 
 .now-card {
