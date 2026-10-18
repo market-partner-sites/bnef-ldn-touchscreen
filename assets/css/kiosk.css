@@ -148,7 +148,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .welcome__pre { display: block; font-weight: 400; font-size: 32px; line-height: 1.2; margin-bottom: 4px; letter-spacing: -.01em; }
 .welcome__city { font-weight: 400; color: var(--accent); }
 /* compact sponsor strip under the Home title */
-.welcome__sponsors { margin-top: 34px; }
+.welcome__sponsors { margin-top: 110px; }
 .welcome__sponsors .attract__sponsors-title { font-size: 26px; margin-bottom: 14px; }
 .welcome__sponsors .attract__sponsors { margin-bottom: 0; gap: 24px; }
 .welcome__sponsors .attract-tier { gap: 8px; }
