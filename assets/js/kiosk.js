@@ -701,7 +701,7 @@
     floor.zones.forEach(function (z) {
       var live = zoneIsLive(z.id, t);
       h += '<g class="zone' + (state.zone === z.id ? ' is-selected' : '') + (live ? ' is-live' : '') + '" data-zone="' + esc(z.id) + '" role="button" tabindex="0" aria-label="' + esc(z.label) + '">' +
-        '<rect x="' + z.x + '" y="' + z.y + '" width="' + z.w + '" height="' + z.h + '" rx="6"/>' +
+        '<rect x="' + z.x + '" y="' + z.y + '" width="' + z.w + '" height="' + z.h + '" rx="3"/>' +
         (live ? '<circle class="live-ring" cx="' + (z.x + z.w - 16) + '" cy="' + (z.y + 16) + '" r="9"/><circle class="live-dot" cx="' + (z.x + z.w - 16) + '" cy="' + (z.y + 16) + '" r="8"/>' : '') +
         '</g>';
     });
