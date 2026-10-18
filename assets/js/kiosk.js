@@ -312,6 +312,8 @@
     state.slotBySessionId = slotBySessionId;
     state.credits = credits;
     state.sessionsByPerson = byPerson;
+    state.regOrder = {};
+    regs.forEach(function (r, i) { state.regOrder[r.id] = (r.order != null ? r.order : 9999) * 10000 + i; });
   }
 
   function peopleOn(sessionId) {
@@ -718,6 +720,54 @@
     go('map');
   }
 
+  /* ================= speakers ================= */
+
+  function isBnefPerson(p) {
+    return /bloombergnef|\bbnef\b/i.test([p.company, p.jobTitle].join(' '));
+  }
+
+  function renderSpeakerDayToggle() {
+    var el = $('#speaker-day-toggle');
+    if (!el) return;
+    el.innerHTML = state.days.map(function (day, i) {
+      var ms = wallFromIso(day + 'T00:00');
+      return '<button type="button" role="tab" data-speaker-day="' + day + '"' + (day === state.speakerDay ? ' class="is-active"' : '') + '>Day ' + (i + 1) +
+        '<small>' + DAY_NAMES[d(ms).getUTCDay()].slice(0, 3) + ' ' + d(ms).getUTCDate() + ' Oct</small></button>';
+    }).join('');
+  }
+
+  // Everyone credited on a main or side agenda session that day, split into
+  // Industry and BNEF speakers (BNEF = BloombergNEF in their company/title).
+  function renderSpeakers() {
+    var list = $('#speaker-list');
+    if (!list) return;
+    var day = state.speakerDay || state.days[0];
+    var people = Object.keys(state.sessionsByPerson || {}).filter(function (pid) {
+      return state.sessionsByPerson[pid].some(function (sid) { var s = state.sessionById[sid]; return s && dayKey(s.start) === day; });
+    }).map(findPerson).filter(Boolean);
+    people.sort(function (a, b) { return (state.regOrder[a.id] || 0) - (state.regOrder[b.id] || 0) || a.name.localeCompare(b.name); });
+    var groups = [
+      { title: 'Industry speakers', items: people.filter(function (p) { return !isBnefPerson(p); }) },
+      { title: 'BNEF speakers', items: people.filter(isBnefPerson) }
+    ];
+    list.innerHTML = groups.map(function (g) {
+      if (!g.items.length) return '';
+      return '<section class="speaker-group"><h3>' + esc(g.title) + ' <span>' + g.items.length + '</span></h3><div class="speaker-grid">' +
+        g.items.map(function (p) {
+          return '<button type="button" class="speaker-card" data-person="' + esc(p.id) + '">' + avatar(p) +
+            '<span class="speaker-card__name">' + esc(p.name) + '</span>' +
+            '<span class="speaker-card__role">' + esc([p.jobTitle, p.company].filter(Boolean).join(', ')) + '</span></button>';
+        }).join('') + '</div></section>';
+    }).join('') || '<p class="empty-note agenda-empty">No speakers listed for this day yet.</p>';
+  }
+
+  function setSpeakerDay(day) {
+    state.speakerDay = day;
+    renderSpeakerDayToggle();
+    renderSpeakers();
+    var sc = $('#speaker-scroller'); if (sc) sc.scrollTop = 0;
+  }
+
   /* ================= sponsors ================= */
 
   function sponsorTiers() {
@@ -804,6 +854,7 @@
     closeSheet();
     go('home');
     state.day = defaultDay(); state.agenda = 'main'; setAgenda('main');
+    setSpeakerDay(defaultDay());
     state.zone = null; state.floor = kioskSpot().floor; renderFloorToggle(); renderMap();
     attractIdx = 0; paintAttractCard();
     clearInterval(attractTimer); attractTimer = setInterval(paintAttractCard, 7000);
@@ -842,6 +893,7 @@
       if ((el = e.target.closest('.next-row[data-slot]'))) { scrollToSlot(el.dataset.slot); return; }
       if ((el = e.target.closest('#agenda-tabs [data-agenda]'))) { setAgenda(el.dataset.agenda); return; }
       if ((el = e.target.closest('#day-toggle [data-day]'))) { setDay(el.dataset.day); return; }
+      if ((el = e.target.closest('#speaker-day-toggle [data-speaker-day]'))) { setSpeakerDay(el.dataset.speakerDay); return; }
       if ((el = e.target.closest('#floor-toggle [data-floor]'))) { state.floor = el.dataset.floor; state.zone = null; renderFloorToggle(); renderMap(); return; }
       if ((el = e.target.closest('[data-zone]'))) {
         if (el.closest('#map-svg')) { state.zone = state.zone === el.dataset.zone ? null : el.dataset.zone; renderMap(); }
@@ -867,6 +919,9 @@
     renderAgenda();
     renderFloorToggle();
     renderMap();
+    if (!state.speakerDay || state.days.indexOf(state.speakerDay) === -1) state.speakerDay = defaultDay();
+    renderSpeakerDayToggle();
+    renderSpeakers();
   }
 
   function refreshData() {

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BNEF Summit Kiosk</title>
 <link rel="icon" href="assets/img/favicon.ico">
-<link rel="stylesheet" href="assets/css/kiosk.css?v=20261008084409">
+<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018100308">
 </head>
 <body>
 
@@ -83,6 +83,17 @@
       </div>
     </section>
 
+    <!-- SPEAKERS -->
+    <section class="view" id="view-speakers" data-view="speakers" aria-label="Speakers">
+      <div class="view-head">
+        <h2 class="view-title">Speakers</h2>
+        <div class="segmented" id="speaker-day-toggle" role="tablist"></div>
+      </div>
+      <div class="scroller" id="speaker-scroller">
+        <div id="speaker-list" class="speaker-list"></div>
+      </div>
+    </section>
+
     <!-- MAP -->
     <section class="view" id="view-map" data-view="map" aria-label="Venue map">
       <div class="view-head">
@@ -134,6 +145,10 @@
     <button type="button" class="dock__btn" data-go="agenda">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3v4M8 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
       <span>Agenda</span>
+    </button>
+    <button type="button" class="dock__btn" data-go="speakers">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.8"/><path d="M15.5 14.3c3.3-.6 6 1.5 6 4.7"/></svg>
+      <span>Speakers</span>
     </button>
     <button type="button" class="dock__btn" data-go="map">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
@@ -190,8 +205,8 @@
   <div class="toast" id="toast" role="status"></div>
 </div>
 
-<script src="assets/js/config.js?v=20261008084409"></script>
+<script src="assets/js/config.js?v=20261018100308"></script>
 <script src="assets/js/vendor/qrcode.js"></script>
-<script src="assets/js/kiosk.js?v=20261008084409"></script>
+<script src="assets/js/kiosk.js?v=20261018100308"></script>
 </body>
 </html>
