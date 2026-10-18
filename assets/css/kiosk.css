@@ -140,13 +140,22 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .section-head__meta { font-size: 22px; color: var(--ink-3); }
 
 /* ---------- home ---------- */
-.welcome { cursor: pointer; position: relative; height: 480px; flex: none; overflow: hidden; background: var(--navy); }
+.welcome { cursor: pointer; position: relative; height: 680px; flex: none; overflow: hidden; background: var(--navy); }
 .welcome__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .welcome__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,14,26,.15) 0%, rgba(5,14,26,.85) 100%); }
 .welcome__text { position: absolute; left: var(--pad); right: var(--pad); bottom: 44px; color: #fff; }
 .welcome__text h1 { margin: 12px 0 0; font-size: 64px; line-height: 1.05; font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
 .welcome__pre { display: block; font-weight: 400; font-size: 32px; line-height: 1.2; margin-bottom: 4px; letter-spacing: -.01em; }
 .welcome__city { font-weight: 400; color: var(--accent); }
+/* compact sponsor strip under the Home title */
+.welcome__sponsors { margin-top: 34px; }
+.welcome__sponsors .attract__sponsors-title { font-size: 26px; margin-bottom: 14px; }
+.welcome__sponsors .attract__sponsors { margin-bottom: 0; gap: 24px; }
+.welcome__sponsors .attract-tier { gap: 8px; }
+.welcome__sponsors .attract-tier__label { font-size: 15px; }
+.welcome__sponsors .attract-tier__logos { gap: 10px; }
+.welcome__sponsors .attract-logo { height: 80px; padding: 10px 14px; }
+.welcome__sponsors .attract-logo img { max-height: 40px; }
 
 .home-body {
   flex: 1; min-height: 0;

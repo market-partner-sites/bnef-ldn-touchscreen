@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BNEF Summit Kiosk</title>
 <link rel="icon" href="assets/img/favicon.ico">
-<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018195526">
+<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018195806">
 </head>
 <body>
 
@@ -27,6 +27,10 @@
         <div class="welcome__scrim"></div>
         <div class="welcome__text">
           <h1><span class="welcome__pre">Welcome to</span> BNEF&nbsp;Summit <span class="welcome__city">London</span></h1>
+          <div class="welcome__sponsors">
+            <h2 class="attract__sponsors-title">Thank you to our sponsors</h2>
+            <div class="attract__sponsors" data-sponsor-strip></div>
+          </div>
         </div>
       </div>
 
@@ -191,7 +195,7 @@
     </div>
     <div class="attract__main">
       <h2 class="attract__sponsors-title">Thank you to our sponsors</h2>
-      <div class="attract__sponsors" id="attract-sponsors"></div>
+      <div class="attract__sponsors" data-sponsor-strip></div>
       <div class="attract__card" id="attract-card"></div>
     </div>
     <div class="attract__foot">
@@ -205,8 +209,8 @@
   <div class="toast" id="toast" role="status"></div>
 </div>
 
-<script src="assets/js/config.js?v=20261018195526"></script>
+<script src="assets/js/config.js?v=20261018195806"></script>
 <script src="assets/js/vendor/qrcode.js"></script>
-<script src="assets/js/kiosk.js?v=20261018195526"></script>
+<script src="assets/js/kiosk.js?v=20261018195806"></script>
 </body>
 </html>

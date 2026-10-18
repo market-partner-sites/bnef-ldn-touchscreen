@@ -837,14 +837,14 @@
         }).join('') + '</div></section>';
     }).join('');
     // Compact partner strip on the welcome (attract) screen.
-    var strip = $('#attract-sponsors');
-    if (strip) strip.innerHTML = sponsorTiers().map(function (g) {
+    var stripHtml = sponsorTiers().map(function (g) {
       return '<div class="attract-tier" style="flex:' + g.items.length + '"><span class="attract-tier__label">' + esc(g.tier) + '</span><div class="attract-tier__logos">' +
         g.items.map(function (i) {
           var sp = C.sponsors[i];
           return '<span class="attract-logo">' + (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<b>' + esc(sp.name) + '</b>') + '</span>';
         }).join('') + '</div></div>';
     }).join('');
+    $$('[data-sponsor-strip]').forEach(function (n) { n.innerHTML = stripHtml; });
   }
 
   function sponsorDetail(i) {
