@@ -5,11 +5,11 @@
    same regardless of any OS light/dark setting.
    ========================================================================== */
 
-/* Avenir Next P for BBG is Bloomberg's licensed face and isn't on a public
-   CDN. Drop the .woff2 files into assets/fonts/ and uncomment:
-   @font-face { font-family: 'Avenir Next P for BBG'; src: url('../fonts/AvenirNextPForBBG-Regular.woff2') format('woff2'); font-weight: 400; }
-   @font-face { font-family: 'Avenir Next P for BBG'; src: url('../fonts/AvenirNextPForBBG-Demi.woff2') format('woff2'); font-weight: 600; }
-   @font-face { font-family: 'Avenir Next P for BBG'; src: url('../fonts/AvenirNextPForBBG-Bold.woff2') format('woff2'); font-weight: 700; } */
+/* Avenir Next P for BBG — Bloomberg's licensed face, bundled so it renders on
+   every device (Android tablets don't have Avenir installed). */
+@font-face { font-family: 'Avenir Next P for BBG'; src: url('../fonts/AvenirNextPForBBG-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Avenir Next P for BBG'; src: url('../fonts/AvenirNextPForBBG-Demi.woff2') format('woff2'); font-weight: 500 600; font-display: swap; }
+@font-face { font-family: 'Avenir Next P for BBG'; src: url('../fonts/AvenirNextPForBBG-Bold.woff2') format('woff2'); font-weight: 700 900; font-display: swap; }
 
 :root {
   color-scheme: light;
