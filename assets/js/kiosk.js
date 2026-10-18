@@ -361,7 +361,7 @@
   function chipFor(s) {
     if (s.track) return '<span class="chip chip--t' + (s.track.order % 3 + 1) + '">Track ' + (s.track.order + 1) + (s.track.topic ? ' · ' + esc(s.track.topic) : '') + '</span>';
     if (s.isPlenary) return '<span class="chip chip--main">Plenary</span>';
-    if (s.isBreak) return '<span class="chip">Networking</span>';
+    if (s.isBreak) return '<span class="chip chip--net">Networking</span>';
     if (s.side) return '<span class="chip">Side agenda</span>';
     return '<span class="chip">Session</span>';
   }
@@ -470,7 +470,7 @@
           var time = '<div class="slot__time">' + fmtTime(sl.start) + (sl.openEnded ? '' : '<small>to ' + fmtTime(sl.end) + '</small>') + '</div>';
           var body;
           if (sl.kind === 'break') {
-            body = '<div class="break-row">' + ICON.cup + '<span>' + esc(sl.sessions[0].title) + '</span></div>';
+            body = '<div class="break-row">' + ICON.cup + '<span>' + esc(sl.sessions[0].title) + '</span><span class="chip chip--net">Networking</span></div>';
           } else if (sl.kind === 'breakout') {
             body = '<div><div class="breakout__head">' + esc(sl.title.replace(/\s*[-–]\s*choose your track/i, '')) + ' <em>· choose one of ' + sl.sessions.length + '</em></div>' +
               '<div class="breakout__tracks">' + sl.sessions.map(sessionButton).join('') + '</div></div>';
