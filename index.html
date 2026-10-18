@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BNEF Summit Kiosk</title>
 <link rel="icon" href="assets/img/favicon.ico">
-<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018100308">
+<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018101406">
 </head>
 <body>
 
@@ -88,6 +88,10 @@
       <div class="view-head">
         <h2 class="view-title">Speakers</h2>
         <div class="segmented" id="speaker-day-toggle" role="tablist"></div>
+      </div>
+      <div class="agenda-tabs" id="speaker-tabs" role="tablist">
+        <button type="button" role="tab" data-speaker-group="industry" class="is-active" aria-selected="true">Industry speakers</button>
+        <button type="button" role="tab" data-speaker-group="bnef" aria-selected="false">BNEF speakers</button>
       </div>
       <div class="scroller" id="speaker-scroller">
         <div id="speaker-list" class="speaker-list"></div>
@@ -205,8 +209,8 @@
   <div class="toast" id="toast" role="status"></div>
 </div>
 
-<script src="assets/js/config.js?v=20261018100308"></script>
+<script src="assets/js/config.js?v=20261018101406"></script>
 <script src="assets/js/vendor/qrcode.js"></script>
-<script src="assets/js/kiosk.js?v=20261018100308"></script>
+<script src="assets/js/kiosk.js?v=20261018101406"></script>
 </body>
 </html>

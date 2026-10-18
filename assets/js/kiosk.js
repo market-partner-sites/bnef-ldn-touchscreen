@@ -747,12 +747,16 @@
     }).map(findPerson).filter(Boolean);
     people.sort(function (a, b) { return (state.regOrder[a.id] || 0) - (state.regOrder[b.id] || 0) || a.name.localeCompare(b.name); });
     var groups = [
-      { title: 'Industry speakers', items: people.filter(function (p) { return !isBnefPerson(p); }) },
-      { title: 'BNEF speakers', items: people.filter(isBnefPerson) }
+      { key: 'industry', title: 'Industry speakers', items: people.filter(function (p) { return !isBnefPerson(p); }) },
+      { key: 'bnef', title: 'BNEF speakers', items: people.filter(isBnefPerson) }
     ];
+    $$('#speaker-tabs [data-speaker-group]').forEach(function (b) {
+      var g = groups.filter(function (x) { return x.key === b.dataset.speakerGroup; })[0];
+      b.disabled = !g.items.length;
+    });
     list.innerHTML = groups.map(function (g) {
       if (!g.items.length) return '';
-      return '<section class="speaker-group"><h3>' + esc(g.title) + ' <span>' + g.items.length + '</span></h3><div class="speaker-grid">' +
+      return '<section class="speaker-group" data-group="' + g.key + '"><h3>' + esc(g.title) + '</h3><div class="speaker-grid">' +
         g.items.map(function (p) {
           return '<button type="button" class="speaker-card" data-person="' + esc(p.id) + '">' + avatar(p) +
             '<span class="speaker-card__name">' + esc(p.name) + '</span>' +
@@ -766,6 +770,35 @@
     renderSpeakerDayToggle();
     renderSpeakers();
     var sc = $('#speaker-scroller'); if (sc) sc.scrollTop = 0;
+    markSpeakerTab();
+  }
+
+  // Sticky Industry / BNEF tabs: tap to jump, and follow the section in view.
+  function speakerSectionTop(sec) {
+    var sc = $('#speaker-scroller');
+    var scale = sc.getBoundingClientRect().height / sc.offsetHeight || 1;
+    return (sec.getBoundingClientRect().top - sc.getBoundingClientRect().top) / scale + sc.scrollTop;
+  }
+  function jumpToSpeakerGroup(key) {
+    var sec = $('#speaker-list [data-group="' + key + '"]');
+    if (!sec) return;
+    $('#speaker-scroller').scrollTo({ top: Math.max(0, speakerSectionTop(sec) - 24), behavior: 'smooth' });
+    setSpeakerTab(key);
+  }
+  function setSpeakerTab(key) {
+    $$('#speaker-tabs [data-speaker-group]').forEach(function (b) {
+      var on = b.dataset.speakerGroup === key;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+  function markSpeakerTab() {
+    var sc = $('#speaker-scroller');
+    var secs = $$('#speaker-list [data-group]');
+    if (!sc || !secs.length) return;
+    var key = secs[0].dataset.group;
+    secs.forEach(function (s) { if (speakerSectionTop(s) - 60 <= sc.scrollTop) key = s.dataset.group; });
+    setSpeakerTab(key);
   }
 
   /* ================= sponsors ================= */
@@ -894,6 +927,7 @@
       if ((el = e.target.closest('#agenda-tabs [data-agenda]'))) { setAgenda(el.dataset.agenda); return; }
       if ((el = e.target.closest('#day-toggle [data-day]'))) { setDay(el.dataset.day); return; }
       if ((el = e.target.closest('#speaker-day-toggle [data-speaker-day]'))) { setSpeakerDay(el.dataset.speakerDay); return; }
+      if ((el = e.target.closest('#speaker-tabs [data-speaker-group]'))) { jumpToSpeakerGroup(el.dataset.speakerGroup); return; }
       if ((el = e.target.closest('#floor-toggle [data-floor]'))) { state.floor = el.dataset.floor; state.zone = null; renderFloorToggle(); renderMap(); return; }
       if ((el = e.target.closest('[data-zone]'))) {
         if (el.closest('#map-svg')) { state.zone = state.zone === el.dataset.zone ? null : el.dataset.zone; renderMap(); }
@@ -906,6 +940,7 @@
     });
 
     window.addEventListener('resize', fitStage);
+    $('#speaker-scroller').addEventListener('scroll', function () { if (!markSpeakerTab.t) markSpeakerTab.t = requestAnimationFrame(function () { markSpeakerTab.t = 0; markSpeakerTab(); }); }, { passive: true });
   }
 
   function fitStage() {

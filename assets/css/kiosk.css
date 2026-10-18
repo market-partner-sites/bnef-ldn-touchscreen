@@ -358,7 +358,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 /* ---------- speakers ---------- */
 .speaker-list { padding: 36px var(--pad) 80px; display: flex; flex-direction: column; gap: 44px; }
 .speaker-group h3 { margin: 0 0 20px; font-size: 22px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
-.speaker-group h3 span { color: var(--ink-3); font-weight: 600; margin-left: 6px; }
+/* let the last group scroll up to the top when its tab is tapped */
+.speaker-group:last-child { min-height: 1280px; }
+.agenda-tabs button:disabled { opacity: .35; }
 .speaker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .speaker-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
