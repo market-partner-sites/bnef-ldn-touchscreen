@@ -37,6 +37,7 @@
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var ICON = {
     chev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>',
     pin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
     cup: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9zM17 11h1.5a2.5 2.5 0 0 1 0 5H17M8 3v3M12 3v3"/></svg>'
   };
@@ -833,7 +834,7 @@
           var sp = C.sponsors[i];
           return '<button type="button" class="sponsor-item" data-sponsor="' + i + '"><span class="sponsor">' +
             (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<span class="sponsor__name">' + esc(sp.name) + '</span>') +
-            '</span>' + ((sp.description || sp.url) ? '<span class="sponsor__more">About' + ICON.chev + '</span>' : '') + '</button>';
+            ((sp.description || sp.url) ? '<span class="sponsor__more">About' + ICON.arrow + '</span>' : '') + '</span></button>';
         }).join('') + '</div></section>';
     }).join('');
     // Compact partner strip on the welcome (attract) screen.
