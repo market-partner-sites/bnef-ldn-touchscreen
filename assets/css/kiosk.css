@@ -211,8 +211,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .tile__title { font-size: 30px; font-weight: 700; }
 .tile__sub { font-size: 21px; color: var(--ink-2); line-height: 1.3; }
 .tile--accent { background: var(--accent-tint); border-color: rgba(75, 174, 135, .35); }
-.tile__qr { width: 96px; height: 96px; margin-bottom: auto; background: #fff; padding: 6px; border-radius: 8px; }
-.tile__qr svg, .qr-card__code svg { display: block; width: 100%; height: 100%; }
+.qr-card__code svg { display: block; width: 100%; height: 100%; }
 
 /* ---------- agenda ---------- */
 .agenda-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 0 var(--pad); background: var(--bg); border-bottom: 1px solid var(--border); }
