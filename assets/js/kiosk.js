@@ -244,7 +244,7 @@
 
     var slots = [];
 
-    function mkSession(s, track) {
+    function mkSession(s, track, breakout) {
       var ss = {
         raw: s,
         id: s.id,
@@ -259,7 +259,8 @@
         track: track ? {
           order: track.order || 0,
           name: track.name.trim(),
-          topic: track.name.replace(/^\s*Track\s*\d+\s*:?\s*/i, '').trim()
+          topic: track.name.replace(/^\s*Track\s*\d+\s*:?\s*/i, '').trim(),
+          lunch: !!(breakout && /lunch/i.test(breakout.name))
         } : null
       };
       ss.side = !!side;
@@ -275,7 +276,7 @@
     breakouts.forEach(function (b) {
       var bs = sessions
         .filter(function (s) { return s.trackId && trackById[s.trackId] && trackById[s.trackId].breakoutId === b.id; })
-        .map(function (s) { return mkSession(s, trackById[s.trackId]); })
+        .map(function (s) { return mkSession(s, trackById[s.trackId], b); })
         .sort(function (a, c) { return a.track.order - c.track.order; });
       slots.push({ kind: 'breakout', title: b.name.trim().replace(/\s+/g, ' '), start: wallFromIso(b.localStart), end: wallFromIso(b.localEnd), sessions: bs });
     });
@@ -359,6 +360,7 @@
   /* ================= home ================= */
 
   function chipFor(s) {
+    if (s.track && s.track.lunch) return '<span class="chip chip--net">Lunch session – Track ' + (s.track.order + 1) + '</span>';
     if (s.track) return '<span class="chip chip--t' + (s.track.order % 3 + 1) + '">Track ' + (s.track.order + 1) + (s.track.topic ? ' · ' + esc(s.track.topic) : '') + '</span>';
     if (s.isPlenary) return '<span class="chip chip--main">Plenary</span>';
     if (s.isBreak) return '<span class="chip chip--net">Networking</span>';
