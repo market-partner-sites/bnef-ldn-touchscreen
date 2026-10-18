@@ -248,7 +248,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .chip {
   display: inline-flex; align-items: center;
   font-size: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-  padding: 5px 12px; border-radius: 6px;
+  padding: 5px 12px; border-radius: 0;
   background: var(--ink-3); color: #fff;
 }
 .chip--main, .now-card__meta .chip--main { background: #00bcd4; color: #fff; }
