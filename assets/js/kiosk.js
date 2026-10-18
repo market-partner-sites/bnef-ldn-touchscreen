@@ -138,7 +138,11 @@
     })(doc.body);
     // drop empty paragraphs (spacers in the CMS, or left behind by removed links)
     Array.prototype.slice.call(doc.body.querySelectorAll('p')).forEach(function (el) {
-      if (!el.textContent.replace(/\u00a0/g, ' ').trim()) el.remove();
+      if (!el.textContent.replace(/\u00a0/g, ' ').trim()) { el.remove(); return; }
+      // and line breaks at the very start/end of a paragraph
+      var n;
+      while ((n = el.firstChild) && (n.nodeName === 'BR' || (n.nodeType === 3 && !n.textContent.trim()))) n.remove();
+      while ((n = el.lastChild) && (n.nodeName === 'BR' || (n.nodeType === 3 && !n.textContent.trim()))) n.remove();
     });
     return doc.body.innerHTML;
   }
