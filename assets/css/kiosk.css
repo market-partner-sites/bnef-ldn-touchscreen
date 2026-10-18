@@ -488,7 +488,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .attract__head .eyebrow { padding-left: 7px; }
 .attract__title { font-size: 105px; line-height: .95; margin: 22px 0 0; letter-spacing: -.035em; font-weight: 700; }
 .attract__title span { font-weight: 400; color: var(--accent); }
-.attract__sponsors { display: flex; gap: 28px; margin-bottom: 28px; }
+.attract__sponsors-title { margin: 0 0 22px; font-size: 34px; font-weight: 600; color: #fff; letter-spacing: -.01em; }
+.attract__sponsors { display: flex; gap: 28px; margin-bottom: 64px; }
 .attract__sponsors:empty { display: none; }
 .attract-tier { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .attract-tier__label { font-size: 18px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
