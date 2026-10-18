@@ -171,7 +171,7 @@ window.KIOSK_CONFIG = {
             "w": 500,
             "h": 340,
             "kind": "stage",
-            "note": "Main stage sessions"
+            "note": "Plenary sessions"
           },
           {
             "id": "editorial",

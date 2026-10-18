@@ -878,7 +878,7 @@
       var title = sl.kind === 'breakout' ? sl.title.replace(/\s*[-–]\s*choose your track/i, '') + ' — ' + sl.sessions.length + ' tracks' : s.title;
       cards.push({ label: 'Coming up' + (sl.day !== dayKey(t) ? ' · ' + fmtDayLong(sl.start) : ''), title: title, meta: fmtTime(sl.start) + (s.room && sl.kind !== 'breakout' ? ' · ' + s.room.label : '') });
     });
-    cards.push({ label: 'Find your way', title: 'Main stage, breakout rooms, catering and cloakroom — all on the venue map.', meta: 'Tap the screen to open the map' });
+    cards.push({ label: 'Find your way', title: 'Plenary, breakout rooms, catering and cloakroom — all on the venue map.', meta: 'Tap the screen to open the map' });
     cards.push({ label: 'Your feedback', title: 'Tell us how the Summit is going — tap the screen, then Feedback.', meta: 'About three minutes on your phone' });
     return cards;
   }
