@@ -361,7 +361,7 @@
 
   function chipFor(s) {
     if (s.track && s.track.lunch) return '<span class="chip chip--net">Lunch session – Track ' + (s.track.order + 1) + '</span>';
-    if (s.track) return '<span class="chip chip--t' + (s.track.order % 3 + 1) + '">Track ' + (s.track.order + 1) + (s.track.topic ? ' · ' + esc(s.track.topic) : '') + '</span>';
+    if (s.track) return '<span class="chip chip--net">Track ' + (s.track.order + 1) + (s.track.topic ? ' · ' + esc(s.track.topic) : '') + '</span>';
     if (s.isPlenary) return '<span class="chip chip--main">Plenary</span>';
     if (s.isBreak) return '<span class="chip chip--net">Networking</span>';
     if (s.side) return '<span class="chip">Side agenda</span>';
