@@ -313,6 +313,8 @@
     state.credits = credits;
     state.sessionsByPerson = byPerson;
     state.regOrder = {};
+    state.peopleById = {};
+    Object.keys(regIndex).forEach(function (id) { state.peopleById[id] = person(regIndex[id]); });
     regs.forEach(function (r, i) { state.regOrder[r.id] = (r.order != null ? r.order : 9999) * 10000 + i; });
   }
 
@@ -618,7 +620,7 @@
       var ppl = peopleOn(ids[i]);
       for (var j = 0; j < ppl.length; j++) if (ppl[j].id === pid) return ppl[j];
     }
-    return null;
+    return (state.peopleById && state.peopleById[pid]) || null;
   }
 
   function personDetail(pid) {
@@ -628,7 +630,7 @@
       .sort(function (a, b) { return state.sessionById[a].start - state.sessionById[b].start; });
     return '<div class="bio">' + avatar(p) + '<div><h3 id="sheet-title">' + esc(p.name) + '</h3><p class="bio__role">' + esc([p.jobTitle, p.company].filter(Boolean).join(', ')) + '</p></div></div>' +
       (p.bioHtml ? '<div class="bio__text">' + cleanHtml(p.bioHtml) + '</div>' : '') +
-      '<div class="bio__sessions"><div class="credits__label">Appearing in</div>' +
+      (ids.length ? '<div class="bio__sessions"><div class="credits__label">Appearing in</div>' : '<div>') +
       ids.map(function (id) {
         var s = state.sessionById[id];
         return '<button type="button" class="next-row" data-session="' + esc(id) + '"><span class="next-row__time"><small style="display:block;font-size:20px;font-weight:400;color:var(--ink-3)">' + fmtDayShort(s.start) + '</small>' + fmtTime(s.start) + '</span>' +
@@ -729,7 +731,8 @@
   function renderSpeakerDayToggle() {
     var el = $('#speaker-day-toggle');
     if (!el) return;
-    el.innerHTML = state.days.map(function (day, i) {
+    el.innerHTML = '<button type="button" role="tab" data-speaker-day="all"' + (state.speakerDay === 'all' ? ' class="is-active"' : '') + '>All</button>' +
+      state.days.map(function (day, i) {
       var ms = wallFromIso(day + 'T00:00');
       return '<button type="button" role="tab" data-speaker-day="' + day + '"' + (day === state.speakerDay ? ' class="is-active"' : '') + '>Day ' + (i + 1) +
         '<small>' + DAY_NAMES[d(ms).getUTCDay()].slice(0, 3) + ' ' + d(ms).getUTCDate() + ' Oct</small></button>';
@@ -741,8 +744,10 @@
   function renderSpeakers() {
     var list = $('#speaker-list');
     if (!list) return;
-    var day = state.speakerDay || state.days[0];
-    var people = Object.keys(state.sessionsByPerson || {}).filter(function (pid) {
+    var day = state.speakerDay || 'all';
+    // "All" = every speaker published in the speakers API; a day = those on that day's sessions.
+    var people = day === 'all' ? Object.keys(state.peopleById || {}).map(function (pid) { return state.peopleById[pid]; }).filter(function (p) { return p && p.name; }) :
+      Object.keys(state.sessionsByPerson || {}).filter(function (pid) {
       return state.sessionsByPerson[pid].some(function (sid) { var s = state.sessionById[sid]; return s && dayKey(s.start) === day; });
     }).map(findPerson).filter(Boolean);
     people.sort(function (a, b) { return (state.regOrder[a.id] || 0) - (state.regOrder[b.id] || 0) || a.name.localeCompare(b.name); });
@@ -887,7 +892,7 @@
     closeSheet();
     go('home');
     state.day = defaultDay(); state.agenda = 'main'; setAgenda('main');
-    setSpeakerDay(defaultDay());
+    setSpeakerDay('all');
     state.zone = null; state.floor = kioskSpot().floor; renderFloorToggle(); renderMap();
     attractIdx = 0; paintAttractCard();
     clearInterval(attractTimer); attractTimer = setInterval(paintAttractCard, 7000);
@@ -954,7 +959,7 @@
     renderAgenda();
     renderFloorToggle();
     renderMap();
-    if (!state.speakerDay || state.days.indexOf(state.speakerDay) === -1) state.speakerDay = defaultDay();
+    if (!state.speakerDay || (state.speakerDay !== 'all' && state.days.indexOf(state.speakerDay) === -1)) state.speakerDay = 'all';
     renderSpeakerDayToggle();
     renderSpeakers();
   }
