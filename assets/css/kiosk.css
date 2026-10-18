@@ -140,7 +140,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .section-head__meta { font-size: 22px; color: var(--ink-3); }
 
 /* ---------- home ---------- */
-.welcome { position: relative; height: 480px; flex: none; overflow: hidden; background: var(--navy); }
+.welcome { cursor: pointer; position: relative; height: 480px; flex: none; overflow: hidden; background: var(--navy); }
 .welcome__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .welcome__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,14,26,.15) 0%, rgba(5,14,26,.85) 100%); }
 .welcome__text { position: absolute; left: var(--pad); right: var(--pad); bottom: 44px; color: #fff; }
