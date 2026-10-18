@@ -70,7 +70,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
      hairline at its border; dark matches the page behind so it never shows */
   background: var(--navy-deep);
   display: grid;
-  grid-template-rows: 150px 1fr 196px;
+  grid-template-rows: 1fr 196px;
   overflow: hidden;
   font-size: 28px; line-height: 1.4;
 }
@@ -84,10 +84,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 
 /* ---------- top bar ---------- */
 .topbar {
-  background: var(--navy); color: var(--ink-inverse);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 var(--pad);
+  position: absolute; top: 60px; right: var(--pad); z-index: 5;
+  color: #fff; pointer-events: none;
 }
+.stage:not([data-view="home"]) .topbar { display: none; }
 .brand { display: flex; align-items: center; gap: 22px; }
 .brand__mark {
   font-weight: 700; font-size: 30px; letter-spacing: .08em;
@@ -97,7 +97,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .brand__name b { font-weight: 700; }
 .brand__logo { display: block; height: 31px; width: auto; }
 .clock { text-align: right; display: flex; flex-direction: column; }
-.clock__time { font-size: 52px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
+.clock__time { font-size: 44px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
 .clock__date { font-size: 22px; color: #a9b0bd; margin-top: 8px; letter-spacing: .02em; }
 
 /* ---------- views ---------- */
@@ -140,7 +140,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .section-head__meta { font-size: 22px; color: var(--ink-3); }
 
 /* ---------- home ---------- */
-.welcome { position: relative; height: 330px; flex: none; overflow: hidden; background: var(--navy); }
+.welcome { position: relative; height: 480px; flex: none; overflow: hidden; background: var(--navy); }
 .welcome__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .welcome__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,14,26,.15) 0%, rgba(5,14,26,.85) 100%); }
 .welcome__text { position: absolute; left: var(--pad); right: var(--pad); bottom: 44px; color: #fff; }

@@ -343,6 +343,7 @@
 
   function go(view) {
     state.view = view;
+    $('#stage').dataset.view = view;
     $$('.view').forEach(function (v) { v.classList.toggle('is-active', v.dataset.view === view); });
     $$('.dock__btn').forEach(function (b) { b.classList.toggle('is-active', b.dataset.go === view); });
     if (view === 'agenda') scrollAgendaToNow(false);
@@ -353,7 +354,6 @@
   function tick() {
     var t = now();
     $('#clock-time').textContent = fmtClock(t);
-    $('#clock-date').textContent = fmtDayLong(t);
     $('#attract-clock').textContent = fmtClock(t);
   }
 

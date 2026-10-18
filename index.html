@@ -5,22 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BNEF Summit Kiosk</title>
 <link rel="icon" href="assets/img/favicon.ico">
-<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018194945">
+<link rel="stylesheet" href="assets/css/kiosk.css?v=20261018195143">
 </head>
 <body>
 
 <!-- Everything is laid out on a fixed 1080 × 1920 portrait stage, scaled to
      fit whatever screen it's on (see fitStage() in kiosk.js). -->
-<div class="stage" id="stage">
+<div class="stage" id="stage" data-view="home">
 
+  <!-- Clock floats over the Home city image (no top bar). -->
   <header class="topbar">
-    <button type="button" class="brand" data-attract aria-label="BNEF Summit – back to the welcome screen">
-      <img class="brand__logo" src="assets/img/bnef-summit-logo.png" alt="">
-    </button>
-    <div class="clock">
-      <span class="clock__time" id="clock-time">--:--</span>
-      <span class="clock__date" id="clock-date"></span>
-    </div>
+    <span class="clock__time" id="clock-time">--:--</span>
   </header>
 
   <main class="views">
@@ -209,8 +204,8 @@
   <div class="toast" id="toast" role="status"></div>
 </div>
 
-<script src="assets/js/config.js?v=20261018194945"></script>
+<script src="assets/js/config.js?v=20261018195143"></script>
 <script src="assets/js/vendor/qrcode.js"></script>
-<script src="assets/js/kiosk.js?v=20261018194945"></script>
+<script src="assets/js/kiosk.js?v=20261018195143"></script>
 </body>
 </html>
