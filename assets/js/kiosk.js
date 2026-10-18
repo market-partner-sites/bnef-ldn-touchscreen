@@ -470,7 +470,7 @@
           var time = '<div class="slot__time">' + fmtTime(sl.start) + (sl.openEnded ? '' : '<small>to ' + fmtTime(sl.end) + '</small>') + '</div>';
           var body;
           if (sl.kind === 'break') {
-            body = '<div class="break-row">' + ICON.cup + '<span>' + esc(sl.sessions[0].title) + '</span><span class="chip chip--net">Networking</span></div>';
+            body = '<div class="break-row">' + ICON.cup + '<div class="break-row__body"><span>' + esc(sl.sessions[0].title) + '</span><span class="chip chip--net">Networking</span></div></div>';
           } else if (sl.kind === 'breakout') {
             body = '<div><div class="breakout__head">' + esc(sl.title.replace(/\s*[-–]\s*choose your track/i, '')) + ' <em>· choose one of ' + sl.sessions.length + '</em></div>' +
               '<div class="breakout__tracks">' + sl.sessions.map(sessionButton).join('') + '</div></div>';

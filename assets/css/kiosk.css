@@ -253,7 +253,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 }
 .chip--main, .now-card__meta .chip--main { background: #00bcd4; color: #fff; }
 .chip--net, .now-card__meta .chip--net { background: #2e8463; color: #fff; }
-.break-row .chip { font-size: 14px; padding: 4px 9px; }
+.break-row__body { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .chip--t1, .now-card__meta .chip--t1 { background: var(--t1); color: #fff; }
 .chip--t2, .now-card__meta .chip--t2 { background: var(--t2); color: #fff; }
 .chip--t3, .now-card__meta .chip--t3 { background: var(--t3); color: #fff; }
