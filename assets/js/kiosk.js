@@ -118,6 +118,15 @@
   function cleanHtml(html) {
     var doc = new DOMParser().parseFromString(html || '', 'text/html');
     var ok = { P: 1, BR: 1, B: 1, STRONG: 1, I: 1, EM: 1, UL: 1, OL: 1, LI: 1 };
+    // Drop LinkedIn links / bare LinkedIn URLs that some speakers add to their bios.
+    var LI_RE = /linkedin/i;
+    Array.prototype.slice.call(doc.querySelectorAll('a')).forEach(function (a) {
+      if (LI_RE.test(a.getAttribute('href') || '') || LI_RE.test(a.textContent)) a.remove();
+    });
+    Array.prototype.slice.call(doc.querySelectorAll('p, li')).forEach(function (el) {
+      var t = el.textContent.replace(/\u00a0/g, ' ').trim();
+      if (/^(linkedin:?\s*)?((https?:\/\/)?([\w-]+\.)?linkedin\.com\S*)?$/i.test(t) && LI_RE.test(t)) el.remove();
+    });
     (function walk(node) {
       Array.prototype.slice.call(node.childNodes).forEach(function (n) {
         if (n.nodeType === 1) {
@@ -127,6 +136,10 @@
         } else if (n.nodeType !== 3) { n.remove(); }
       });
     })(doc.body);
+    // drop empty paragraphs (spacers in the CMS, or left behind by removed links)
+    Array.prototype.slice.call(doc.body.querySelectorAll('p')).forEach(function (el) {
+      if (!el.textContent.replace(/\u00a0/g, ' ').trim()) el.remove();
+    });
     return doc.body.innerHTML;
   }
 

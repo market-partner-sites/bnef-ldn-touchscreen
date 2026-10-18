@@ -472,12 +472,12 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .person__role { font-size: 22px; color: var(--ink-2); display: block; line-height: 1.3; margin-top: 4px; }
 .person svg { width: 34px; height: 34px; color: var(--ink-3); }
 
-.bio { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: center; margin-bottom: 36px; }
-.bio .av { width: 220px; height: 220px; font-size: 64px; }
-.bio h3 { margin: 0 0 8px; font-size: 48px; font-weight: 700; letter-spacing: -.01em; }
-.bio__role { font-size: 25px; color: var(--ink-2); margin: 0; }
-.bio__text { font-size: 26px; line-height: 1.6; color: var(--ink-2); max-width: 920px; }
-.bio__text p { margin: 0 0 20px; }
+.bio { display: grid; grid-template-columns: 150px 1fr; gap: 30px; align-items: center; margin-bottom: 28px; }
+.bio .av { width: 150px; height: 150px; font-size: 46px; }
+.bio h3 { margin: 0 0 6px; font-size: 36px; font-weight: 700; letter-spacing: -.01em; }
+.bio__role { font-size: 21px; color: var(--ink-2); margin: 0; }
+.bio__text { font-size: 21px; line-height: 1.55; color: var(--ink-2); max-width: 920px; }
+.bio__text p { margin: 0 0 16px; }
 .bio__sessions { margin-top: 20px; }
 
 /* ---------- attract ---------- */
