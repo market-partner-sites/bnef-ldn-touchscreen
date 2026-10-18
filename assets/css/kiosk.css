@@ -270,10 +270,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 
 .slot--break .slot__time { padding-top: 0; }
 .break-row {
-  display: flex; align-items: center; gap: 18px;
+  display: flex; align-items: center; gap: 18px; padding-left: 24px;
   font-size: 24px; color: var(--ink-2);
 }
-.break-row svg { width: 30px; height: 30px; color: var(--t2); flex: none; }
 
 .breakout__head { font-size: 24px; font-weight: 600; color: var(--ink-2); padding-top: 14px; margin-bottom: 12px; }
 .breakout__head em { font-style: normal; color: var(--ink-3); font-weight: 400; }
@@ -283,7 +282,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .session--t3 { border-left: 8px solid var(--t3); }
 
 .slot.is-now .session, .slot.is-now .break-row { box-shadow: 0 0 0 3px var(--accent); }
-.slot.is-now .break-row { border-radius: var(--r); padding: 16px 20px; background: var(--accent-tint); box-shadow: none; }
+.slot.is-now .break-row { border-radius: var(--r); padding: 16px 24px; background: var(--accent-tint); box-shadow: none; }
 .slot.is-past { opacity: .5; }
 .now-rule {
   position: relative; height: 0; border-top: 3px solid var(--accent); margin: 0 0 0 0;
