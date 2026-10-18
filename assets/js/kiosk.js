@@ -834,7 +834,7 @@
           var sp = C.sponsors[i];
           return '<button type="button" class="sponsor-item" data-sponsor="' + i + '"><span class="sponsor">' +
             (sp.logo ? '<img src="' + esc(asset(sp.logo)) + '" alt="' + esc(sp.name) + '">' : '<span class="sponsor__name">' + esc(sp.name) + '</span>') +
-            ((sp.description || sp.url) ? '<span class="sponsor__more">About' + ICON.arrow + '</span>' : '') + '</span></button>';
+            ((sp.description || sp.url) ? '<span class="sponsor__more" aria-label="About ' + esc(sp.name) + '">' + ICON.arrow + '</span>' : '') + '</span></button>';
         }).join('') + '</div></section>';
     }).join('');
     // Compact partner strip on the welcome (attract) screen.

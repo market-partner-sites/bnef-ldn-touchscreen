@@ -397,8 +397,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .sponsor img { max-width: 80%; max-height: 110px; object-fit: contain; }
 .sponsor__name { font-size: 40px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
 .sponsor { position: relative; }
-.sponsor__more { position: absolute; right: 16px; bottom: 12px; font-size: 16px; font-weight: 600; color: var(--accent); display: inline-flex; align-items: center; gap: 6px; }
-.sponsor__more svg { width: 18px; height: 18px; stroke-width: 2.4; }
+.sponsor__more { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); color: var(--accent); display: inline-flex; }
+.sponsor__more svg { width: 26px; height: 26px; stroke-width: 2.2; }
 
 .sponsor-detail__logo { background: #fff; border: 1px solid var(--border); border-radius: var(--r); padding: 14px 20px; display: inline-flex; justify-content: center; margin-bottom: 24px; }
 .sponsor-detail__logo img { display: block; max-width: 280px; max-height: 54px; object-fit: contain; }
