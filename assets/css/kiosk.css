@@ -194,7 +194,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .next-row__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 20px; color: var(--ink-3); }
 .next-row__meta .chip, .now-card__meta .chip { font-size: 14px; padding: 4px 9px; }
 .now-card__meta .chip { background: rgba(255,255,255,.1); color: #fff; }
-.now-card__meta .chip--t1, .now-card__meta .chip--t2, .now-card__meta .chip--t3 { background: rgba(255,255,255,.1); color: #fff; }
 .next-row svg { width: 34px; height: 34px; color: var(--ink-3); align-self: center; }
 
 .empty-note { font-size: 26px; color: var(--ink-2); margin: 0; }
@@ -250,14 +249,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   display: inline-flex; align-items: center;
   font-size: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   padding: 5px 12px; border-radius: 6px;
-  background: var(--surface-2); color: var(--ink-2);
+  background: var(--ink-3); color: #fff;
 }
-.chip--main, .now-card__meta .chip--main { background: #00bcd4; color: var(--ink); }
+.chip--main, .now-card__meta .chip--main { background: #00bcd4; color: #fff; }
 .chip--net, .now-card__meta .chip--net { background: #2e8463; color: #fff; }
 .break-row .chip { font-size: 14px; padding: 4px 9px; }
-.chip--t1 { background: var(--t1-tint); color: var(--t1-text); }
-.chip--t2 { background: var(--t2-tint); color: var(--t2-text); }
-.chip--t3 { background: var(--t3-tint); color: var(--t3-text); }
+.chip--t1, .now-card__meta .chip--t1 { background: var(--t1); color: #fff; }
+.chip--t2, .now-card__meta .chip--t2 { background: var(--t2); color: #fff; }
+.chip--t3, .now-card__meta .chip--t3 { background: var(--t3); color: #fff; }
 
 .avatars { display: flex; }
 .avatars .av { width: 44px; height: 44px; margin-left: -10px; border: 3px solid var(--surface); }
