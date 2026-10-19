@@ -115,6 +115,29 @@
   }, true);
 
   // Speaker bios come from the event platform as HTML; keep only simple text formatting.
+  // Minimal markdown for session descriptions: paragraphs, bullet lists,
+  // line breaks and **bold**. Links keep their text only (no outward links).
+  function mdToHtml(md) {
+    md = String(md || '').replace(/\r/g, '').trim();
+    if (!md) return '';
+    var inline = function (t) {
+      t = t.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+      return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*/g, '').replace(/\s+$/, '');
+    };
+    return md.split(/\n\s*\n/).map(function (block) {
+      var out = '', para = [], items = [];
+      var flushP = function () { if (para.length) out += '<p>' + para.join('<br>') + '</p>'; para = []; };
+      var flushL = function () { if (items.length) out += '<ul>' + items.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>'; items = []; };
+      block.split('\n').forEach(function (line) {
+        var m = line.match(/^\s*(?:[-*\u2022\u2013]|\d+[.)])\s+(.*)$/);
+        if (m) { flushP(); items.push(inline(m[1])); }
+        else if (line.trim()) { flushL(); para.push(inline(line.trim())); }
+      });
+      flushP(); flushL();
+      return out;
+    }).join('');
+  }
+
   function cleanHtml(html) {
     var doc = new DOMParser().parseFromString(html || '', 'text/html');
     var ok = { P: 1, BR: 1, B: 1, STRONG: 1, I: 1, EM: 1, UL: 1, OL: 1, LI: 1 };
@@ -270,6 +293,7 @@
         subtitle: (s.subtitle || '').trim(),
         // plain text: drop markdown links (keep their text) and emphasis markers
         synopsis: (s.synopsisMd || '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/\*+/g, '').trim(),
+        synopsisHtml: mdToHtml(s.synopsisMd),
         start: wallFromIso(s.localStart),
         end: wallFromIso(s.localEnd),
         isBreak: isBreak(s),
@@ -619,7 +643,7 @@
       '<span class="detail__time">' + fmtDayLong(s.start) + ' · ' + fmtTime(s.start) + (sl.openEnded ? '' : ' – ' + fmtTime(s.end)) + '</span></div>' +
       '<h2 class="detail__title" id="sheet-title">' + esc(s.title) + '</h2>' +
       (s.subtitle ? '<p class="detail__sub">' + esc(s.subtitle) + '</p>' : '') +
-      (s.synopsis ? '<p class="detail__desc">' + esc(s.synopsis) + '</p>' : '');
+      (s.synopsisHtml ? '<div class="detail__desc">' + s.synopsisHtml + '</div>' : '');
     if (s.room && s.room.id) {
       h += '<button type="button" class="map-link" data-zone="' + esc(s.room.id) + '">' + ICON.pin + 'Find ' + esc(s.room.label) + ' on the map</button>';
     } else if (s.room) {
