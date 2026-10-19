@@ -209,9 +209,7 @@
   }
   function load(key) {
     if (window.KIOSK_DATA && window.KIOSK_DATA[key]) return Promise.resolve(window.KIOSK_DATA[key]);
-    // The snapshot gets a cache-buster so S3 / CloudFront never serve a stale copy.
-    var snap = C.snapshot[key] + (C.snapshot[key].indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now();
-    return fetchJson(C.api[key]).catch(function () { return fetchJson(snap); });
+    return fetchJson(C.api[key]).catch(function () { return fetchJson(C.snapshot[key]); });
   }
 
   function person(reg) {
