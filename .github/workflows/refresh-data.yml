@@ -1,17 +1,19 @@
 name: Refresh live event data
 
-# Keeps data/*.json up to date so the site has real content even where the
-# bbgevent.app APIs can't be called directly from the browser (CORS only
-# allows bbgevent.app itself to read them — see the comment block at the
-# top of assets/js/agenda.js). This runs server-side on GitHub's runners,
-# so CORS doesn't apply here at all — it's a plain HTTP fetch.
+# Keeps data/*.json up to date. The kiosk can't call the bbgevent.app API
+# from the browser (CORS only allows bbgevent.app itself), so it reads these
+# copies instead. This runs server-side on GitHub's runners, where CORS
+# doesn't apply.
 #
-# The site tries the live API first and only uses these files as a
-# fallback, so this keeps that fallback fresh to within ~15 minutes.
+# GitHub's scheduler is unreliable for short intervals (a "every 15 minutes"
+# schedule often only fires every few hours). So each run stays alive for
+# ~5h40m and refreshes every 5 minutes itself; the schedule just keeps a new
+# run queued to take over when the current one ends. Only one run is active
+# at a time (see concurrency). Public repo, so Actions minutes are free.
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch: {}
   push:
     branches: [main]
@@ -28,38 +30,47 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch live data
+      - name: Refresh every 5 minutes for ~5h40m
+        env:
+          BASE: https://bbgevent.app/api/clients/bnef/events/bnef_summit_london_2026
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           mkdir -p data
 
           fetch() {
-            url="$1"
-            out="$2"
-            tmp="$(mktemp)"
+            url="$1"; out="$2"; tmp="$(mktemp)"
             if curl -sSf --max-time 30 "$url" -o "$tmp" && jq empty "$tmp" 2>/dev/null; then
               mv "$tmp" "$out"
-              echo "Refreshed $out"
             else
-              echo "::warning::Failed to fetch or parse $url — keeping existing $out"
+              echo "::warning::Failed to fetch or parse $url - keeping existing $out"
               rm -f "$tmp"
             fi
           }
 
-          fetch 'https://bbgevent.app/api/clients/bnef/events/bnef_summit_london_2026/agendas' data/agenda.json
-          fetch 'https://bbgevent.app/api/clients/bnef/events/bnef_summit_london_2026/registrations?categoryType=Speaker' data/speakers.json
-          fetch 'https://bbgevent.app/api/clients/bnef/events/bnef_summit_london_2026/content-relationships' data/relationships.json
+          for i in $(seq 1 68); do
+            echo "--- refresh $i at $(date -u '+%H:%M:%S') UTC"
+            # pick up anything pushed since (site edits, other runs)
+            git pull -q --rebase origin main || { git rebase --abort || true; }
 
-      - name: Commit changes if any
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/agenda.json data/speakers.json data/relationships.json
-          if git diff --cached --quiet; then
-            echo "No data changes."
-          else
-            git commit -m "chore: refresh live event data snapshot"
-            git push
-          fi
+            fetch "$BASE/agendas" data/agenda.json
+            fetch "$BASE/registrations?categoryType=Speaker" data/speakers.json
+            fetch "$BASE/content-relationships" data/relationships.json
+
+            git add data/agenda.json data/speakers.json data/relationships.json
+            if git diff --cached --quiet; then
+              echo "No data changes."
+            else
+              git commit -q -m "chore: refresh live event data snapshot"
+              for attempt in 1 2 3; do
+                if git push -q origin HEAD:main; then echo "Pushed new data."; break; fi
+                git pull -q --rebase origin main || { git rebase --abort || true; break; }
+              done
+            fi
+
+            if [ "$i" -lt 68 ]; then sleep 300; fi
+          done
