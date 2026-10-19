@@ -61,7 +61,7 @@ window.KIOSK_CONFIG = {
      Paste the Google Apps Script web-app URL here (see analytics/README.txt).
      Leave empty to switch tap logging off. Each kiosk is named by its
      ?kiosk= URL parameter (e.g. index.html?kiosk=registration). */
-  analyticsUrl: '',
+  analyticsUrl: 'https://script.google.com/macros/s/AKfycbzoczMqleq07LeEN4hmssu-WKxUUnqS5t9L9ga9Taq8S1fBfXWLFDcGgIshPH82bADpBA/exec',
 
   /* ---- Behaviour -------------------------------------------------------- */
   idleSeconds: 90,              // return to the attract screen after this long untouched
