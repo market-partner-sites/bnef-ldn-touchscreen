@@ -57,6 +57,12 @@ window.KIOSK_CONFIG = {
     }
   ],
 
+  /* ---- Tap analytics ----------------------------------------------------
+     Paste the Google Apps Script web-app URL here (see analytics/README.txt).
+     Leave empty to switch tap logging off. Each kiosk is named by its
+     ?kiosk= URL parameter (e.g. index.html?kiosk=registration). */
+  analyticsUrl: '',
+
   /* ---- Behaviour -------------------------------------------------------- */
   idleSeconds: 90,              // return to the attract screen after this long untouched
   dataRefreshMinutes: 5,        // re-fetch agenda/speakers this often

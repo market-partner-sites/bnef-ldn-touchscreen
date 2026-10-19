@@ -948,6 +948,7 @@
     el.innerHTML = '<div class="label">' + esc(c.label) + '</div><div class="title">' + esc(c.title) + '</div><div class="meta">' + esc(c.meta) + '</div>';
   }
   function showAttract() {
+    A.end(false);
     closeSheet();
     go('home');
     state.day = defaultDay(); state.agenda = 'main'; setAgenda('main');
@@ -960,14 +961,90 @@
   function hideAttract() {
     clearInterval(attractTimer);
     $('#attract').classList.remove('is-on');
+    A.start();
     renderHome();
     bumpIdle();
+  }
+
+
+  /* ================= analytics =================
+     Anonymous tap logging to a Google Sheet (see analytics/apps-script.gs).
+     Off unless C.analyticsUrl is set. Events are queued on the device and
+     sent in batches, so a Wi-Fi drop doesn't lose them. No personal data. */
+  var A = (function () {
+    var url = C.analyticsUrl || '';
+    var KEY = 'bnefKioskTapQueue';
+    var kiosk = params.get('kiosk') || C.analyticsKioskName || C.venue.defaultKiosk || 'kiosk';
+    var test = !!(params.get('now') || location.hash === '#demo' || location.protocol === 'file:' ||
+                  /^(localhost|127\.|\[::1\])/.test(location.hostname));
+    var queue = [];
+    try { queue = JSON.parse(localStorage.getItem(KEY) || '[]') || []; } catch (e) { queue = []; }
+    var visit = null, visitStart = 0, seq = 0, sending = false;
+    var fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    function london(d) { var p = {}; fmt.formatToParts(d).forEach(function (x) { p[x.type] = x.value; }); return p.year + '-' + p.month + '-' + p.day + ' ' + p.hour + ':' + p.minute + ':' + p.second; }
+    function rid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(queue.slice(-3000))); } catch (e) { /* storage unavailable: keep in memory */ } }
+    function push(event, o) {
+      o = o || {};
+      queue.push({ id: rid(), time: london(new Date()), kiosk: kiosk, visit: visit || '', seq: ++seq, event: event,
+        screen: state.view || '', itemType: o.type || '', itemId: o.id || '', item: o.label || '', detail: o.detail || '',
+        duration: o.duration === undefined ? '' : o.duration, test: test });
+      save();
+      if (queue.length >= 25) flush();
+    }
+    function start() { if (!url || visit) return; visit = rid(); visitStart = Date.now(); seq = 0; push('visit_start'); }
+    function log(event, o) { if (!url) return; if (!visit) start(); push(event, o); }
+    function end(byIdle) {
+      if (!url || !visit) return;
+      var secs = Math.round((Date.now() - visitStart) / 1000) - (byIdle ? C.idleSeconds : 0);
+      push('visit_end', { duration: Math.max(0, secs), detail: byIdle ? 'timed out' : 'returned to welcome screen' });
+      visit = null;
+      flush();
+    }
+    function flush() {
+      if (!url || sending || !queue.length || navigator.onLine === false) return;
+      var batch = queue.slice(0, 100), ids = {};
+      batch.forEach(function (e) { ids[e.id] = 1; });
+      sending = true;
+      // text/plain + no-cors = a "simple" request Apps Script accepts without CORS setup.
+      fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ events: batch }) })
+        .then(function () {
+          queue = queue.filter(function (e) { return !ids[e.id]; }); save();
+          sending = false;
+          if (queue.length) setTimeout(flush, 1000);
+        })
+        .catch(function () { sending = false; });
+    }
+    if (url) { setInterval(flush, 30000); window.addEventListener('online', flush); setTimeout(flush, 5000); }
+    return { start: start, log: log, end: end, flush: flush };
+  })();
+
+  function zoneLabel(id) { return (zoneIndex[id] && zoneIndex[id].zone.label) || id; }
+  function sessionLabel(id) { var x = state.sessionById[id]; return x ? x.title : id; }
+
+  // Mirrors the click handler's priority so each tap logs exactly one event.
+  function trackClick(e) {
+    var el, t = e.target, sp, pp;
+    if ((el = t.closest('[data-attract]'))) return A.log('tap', { type: 'nav', id: 'welcome', label: 'Back to welcome screen' });
+    if ((el = t.closest('[data-go]'))) return A.log('open_screen', { type: 'screen', id: el.dataset.go, label: el.dataset.go, detail: el.classList.contains('tile') ? 'home tile' : 'bottom bar' });
+    if ((el = t.closest('[data-close]'))) return A.log('close_popup');
+    if ((el = t.closest('#sheet-back'))) return A.log('popup_back');
+    if ((el = t.closest('[data-sponsor]'))) { sp = C.sponsors[+el.dataset.sponsor] || {}; return A.log('open_sponsor', { type: 'sponsor', id: el.dataset.sponsor, label: sp.name, detail: sp.tier }); }
+    if ((el = t.closest('[data-person]'))) { pp = findPerson(el.dataset.person); return A.log('open_speaker', { type: 'speaker', id: el.dataset.person, label: pp ? pp.name : '', detail: pp ? pp.company : '' }); }
+    if ((el = t.closest('[data-session]'))) return A.log('open_session', { type: 'session', id: el.dataset.session, label: sessionLabel(el.dataset.session) });
+    if ((el = t.closest('.next-row[data-slot]'))) return A.log('open_breakout', { type: 'slot', id: el.dataset.slot, label: (slotByIdx(el.dataset.slot) || {}).title || '' });
+    if ((el = t.closest('#agenda-tabs [data-agenda]'))) return A.log('filter', { type: 'agenda', id: el.dataset.agenda, label: el.textContent.trim() });
+    if ((el = t.closest('#day-toggle [data-day]'))) return A.log('filter', { type: 'agenda day', id: el.dataset.day, label: el.dataset.day });
+    if ((el = t.closest('#speaker-day-toggle [data-speaker-day]'))) return A.log('filter', { type: 'speaker day', id: el.dataset.speakerDay, label: el.textContent.trim() });
+    if ((el = t.closest('#speaker-tabs [data-speaker-group]'))) return A.log('filter', { type: 'speaker group', id: el.dataset.speakerGroup, label: el.textContent.trim() });
+    if ((el = t.closest('#floor-toggle [data-floor]'))) return A.log('filter', { type: 'floor', id: el.dataset.floor, label: el.textContent.trim() });
+    if ((el = t.closest('[data-zone]'))) return A.log(el.closest('#map-svg') ? 'map_room' : 'find_on_map', { type: 'room', id: el.dataset.zone, label: zoneLabel(el.dataset.zone) });
   }
 
   var idleTimer = null;
   function bumpIdle() {
     clearTimeout(idleTimer);
-    idleTimer = setTimeout(showAttract, C.idleSeconds * 1000);
+    idleTimer = setTimeout(function () { A.end(true); showAttract(); }, C.idleSeconds * 1000);
   }
 
   /* ================= wiring ================= */
@@ -977,6 +1054,7 @@
     document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
     $('#attract').addEventListener('click', hideAttract);
+    document.addEventListener('click', function (e) { if (!e.target.closest('#attract')) { try { trackClick(e); } catch (err) { /* never block a tap */ } } }, true);
 
     document.addEventListener('click', function (e) {
       var el;
