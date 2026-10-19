@@ -1002,20 +1002,25 @@
       flush();
     }
     function flush() {
+      if (sending && Date.now() - sending > 30000) sending = false;   // belt and braces
       if (!url || sending || !queue.length || navigator.onLine === false) return;
       var batch = queue.slice(0, 100), ids = {};
       batch.forEach(function (e) { ids[e.id] = 1; });
-      sending = true;
+      sending = Date.now();
+      // Never let one stuck request block sending: give up after 25s and retry later.
+      var ctl = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctl) ctl.abort(); sending = false; }, 25000);
       // text/plain + no-cors = a "simple" request Apps Script accepts without CORS setup.
-      fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ events: batch }) })
+      fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ events: batch }), signal: ctl ? ctl.signal : undefined })
         .then(function () {
+          clearTimeout(timer);
           queue = queue.filter(function (e) { return !ids[e.id]; }); save();
           sending = false;
           if (queue.length) setTimeout(flush, 1000);
         })
-        .catch(function () { sending = false; });
+        .catch(function () { clearTimeout(timer); sending = false; });
     }
-    if (url) { setInterval(flush, 30000); window.addEventListener('online', flush); setTimeout(flush, 5000); }
+    if (url) { setInterval(flush, 15000); window.addEventListener('online', flush); setTimeout(flush, 5000); }
     return { start: start, log: log, end: end, flush: flush };
   })();
 
