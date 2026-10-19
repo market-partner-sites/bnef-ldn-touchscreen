@@ -119,8 +119,8 @@
   // click here" line (with any link), and any sentence linking to BNEF slides.
   function stripHidden(md) {
     return String(md || '')
-      .replace(/[^.\n]*access the presentation[^\n]*?(?:\.(?=\s|$)|$)/gi, '')
-      .replace(/[^.\n]*bnef\.com\/slides[^\n]*?(?:\.(?=\s|$)|$)/gi, '')
+      .replace(/[^.!?\n]*access the presentation[^\n]*?(?:\.(?=\s|$)|$)/gi, '')
+      .replace(/[^.!?\n]*bnef\.com\/slides[^\n]*?(?:\.(?=\s|$)|$)/gi, '')
       .replace(/[ \t]+\n/g, '\n').trim();
   }
 
