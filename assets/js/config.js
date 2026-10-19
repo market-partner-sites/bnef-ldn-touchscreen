@@ -69,7 +69,8 @@ window.KIOSK_CONFIG = {
 
   /* ---- Live data --------------------------------------------------------
      Tried first; if the call fails (CORS / offline) the kiosk falls back to
-     the same-origin snapshot in data/, kept fresh by the GitHub Action. */
+     the same-origin snapshot in data/, kept fresh by refresh-data.sh
+     (run it with --watch and S3_BUCKET set to keep S3 up to date). */
   api: {
     agenda: 'https://bbgevent.app/api/clients/bnef/events/bnef_summit_london_2026/agendas',
     speakers: 'https://bbgevent.app/api/clients/bnef/events/bnef_summit_london_2026/registrations?categoryType=Speaker',
