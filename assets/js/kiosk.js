@@ -491,7 +491,8 @@
           var body;
           if (sl.kind === 'break') {
             var bs = sl.sessions[0];
-            var inner = '<div class="break-row__body"><span>' + esc(bs.title) + '</span><span class="chip chip--net">Networking</span></div>';
+            var inner = '<div class="break-row__body"><span>' + esc(bs.title) + '</span><span class="session__meta"><span class="chip chip--net">Networking</span>' +
+              (bs.room ? '<span class="session__room">Location: ' + esc(bs.room.label) + '</span>' : '') + '</span></div>';
             // Breaks with a description in the API open the detail sheet like a session.
             body = bs.synopsis
               ? '<button type="button" class="break-row break-row--link" data-session="' + esc(bs.id) + '">' + inner + ICON.chev + '</button>'
